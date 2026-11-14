@@ -4969,7 +4969,7 @@
         const HAND_ASSET_PATHS=Object.freeze({
           'hand-wasm-simd':'./assets/hand/vision_wasm_internal.wasm',
           'hand-wasm-basic':'./assets/hand/vision_wasm_nosimd_internal.wasm',
-          'hand-model-data':'./assets/hand/hand_landmarker.task'
+          'hand-model-data':'./assets/hand/hand_landmarker.bin'
         });
         const HAND_ASSET_LINKS=Object.freeze({
           'hand-wasm-simd':'hand-wasm-simd-resource',

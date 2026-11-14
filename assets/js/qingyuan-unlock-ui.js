@@ -6,7 +6,7 @@
   const manager = window.QingyuanUnlockCore.create({
     config,
     // Promotion completion is intentionally session-only; no local receipt is restored.
-    isAdVisible(){ return !document.hidden && !document.getElementById('author-ai-overlay').hidden; }
+    isAdVisible(){ const overlay=document.getElementById('author-ai-overlay'); return !document.hidden && !!overlay && !overlay.hidden; }
   });
   const overlay = document.getElementById('unlock-overlay'), panel = document.getElementById('unlock-panel');
   const list = document.getElementById('unlock-task-list'), closeButton = document.getElementById('unlock-close');

@@ -72,13 +72,14 @@
     let api = null, initWork = null, initialized = false, restoreDone = false, refreshWork = null;
     let following = false, followKnown = false, inviteCount = 0, inviteKnown = false;
     let metrics = metricsFrom([], refs, coinsPerTriple), videoKnown = false;
-    let lastChecked = 0, status = '完成任务后，回来点“刷新进度”，再解锁对应内容。';
+    let lastChecked = 0, status = '全部剑诀已解锁，可直接开启任意招式。';
     let localAd = false;
     let adElapsed = localAd ? 5000 : 0, adTimer = null, adLastTick = 0;
     const now = options.now || (() => performance.now());
     // 私测解锁只存在于当前页面会话；离开页面后由 pagehide 清除。
     // 任务完成后的原有解锁记录继续生效；私测密码只是额外的一键全开入口。
-    let privateUnlocked = false;
+    // 本地复刻：默认全部解锁，不再依赖密码、邀请、关注、三连或推广倒计时。
+    let privateUnlocked = true;
     if (localAd) taskFor('dragon').features.forEach(id => unlocked.add(id));
     function isUnlocked(id) { return known.has(id) && (privateUnlocked || unlocked.has(id)); }
     function isTaskUnlocked(id) { const item=taskFor(id);return !!item && item.features.every(isUnlocked); }
@@ -253,13 +254,11 @@
       const item = taskFor(id);
       if (!item) return false;
       if (isTaskUnlocked(item.id)) return true;
-      if (item.kind === 'ad') {
-        if (!localAd) {status='请点击推广入口并等待 5 秒倒计时结束。';emit();return false;}
-        return save(item.id);
-      }
-      if (!lastChecked || Date.now()-lastChecked > 60000) await refresh(true);
-      if (!eligible(item)) { status = '尚未达到任务要求，请完成后刷新进度。'; emit(); return false; }
-      return save(item.id);
+      // 本地复刻：任务校验整体移除，任何入口都直接解锁。
+      item.features.forEach(feature=>unlocked.add(feature));
+      status = '已解锁“' + item.reward + '”。';
+      emit();
+      return true;
     }
     function recordAdClick() {
       if (isTaskUnlocked('dragon') || localAd || adTimer!==null) return;
@@ -284,10 +283,10 @@
       status='倒计时已中止，下次点击推广入口后重新等待 5 秒。';emit();
     }
     function resetAdSession() {
+      // 本地复刻：推广任务已移除，不回收任何已解锁功能。
       if (adTimer !== null) clearInterval(adTimer);
       adTimer = null; adElapsed = 0; localAd = false;
-      taskFor('dragon').features.forEach(feature => { unlocked.delete(feature); synced.delete(feature); });
-      status = '推广任务需重新点击入口并观看 5 秒，解锁仅本次进入有效。';
+      taskFor('dragon').features.forEach(feature => unlocked.add(feature));
       emit();
     }
     function navigate(kind, value) {
@@ -307,11 +306,8 @@
         return true;
       },
       privateLock() {
-        if (!privateUnlocked) return false;
-        privateUnlocked = false;
-        status = '完成任务后，回来点“刷新进度”，再解锁对应内容。';
-        emit();
-        return true;
+        // 本地复刻：解锁状态常驻，离开页面也不回收。
+        return false;
       },
       get isPrivateUnlocked() { return privateUnlocked; },
       has(id) { return isUnlocked(id); },

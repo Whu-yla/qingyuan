@@ -8,7 +8,10 @@
   let connecting = null, connectionSerial = 0, stateRevision = 0, mediaSerial = 0;
   let suspended = false, connected = false, pendingMode = null;
   const toyRoute = /(^|\.)bilibili\.com$/i.test(location.hostname) && /^\/toy(?:\/|$)/.test(location.pathname);
+  // 本地复刻：强制使用浏览器原生 getUserMedia，不再依赖 B站 Toy SDK 的摄像头授权。
+  const STANDALONE = true;
   function isPlatformPage() {
+    if (STANDALONE) return false;
     // Toy runs inside a host iframe; its child URL can be a CDN URL or srcdoc.
     // The SDK relays camera requests to that host instead of using child permissions.
     let embedded = true;

@@ -1,0 +1,5 @@
+[shot] navigating to http://127.0.0.1:8123/index.html
+[shot] navigation response status: 200
+[shot] stage: pct=0 hidden=true inert=true state=null | 
+[shot] startup not ready; waiting 3000ms before capture
+[shot] capturing screenshots

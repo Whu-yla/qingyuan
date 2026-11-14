@@ -45,6 +45,7 @@
 | 10 | 任务校验链路 | 每 30 秒调 B站接口核验关注/三连/邀请，失败就提示"无法核验" | 校验整体短路，任何入口直接解锁 | qingyuan-unlock-core.js:253-262 |
 | 11 | 模型 404 | 手部模型原先固定读 `hand_landmarker.task`（服务器已 404，靠远程兜底） | 本地直接指向 `.bin`，零 404、零远程回退 | index.html:534, assets/js/app.js:4972 |
 | 12 | 解锁相关文案 | 说明里写"完成任务才能解锁" | 改写为"完整解锁版"说明 | index.html:815 |
+| 13 | 全屏画质/帧率降级 | 一进全屏就把像素比压到 1.10、关掉阴影、限帧 45fps（手势模式 30fps） | 全屏与窗口画质完全一致，不限帧；画质只由"精致/流畅"开关决定 | assets/js/app.js:644-661 |
 
 补充：`assets/js/qingyuan-unlock-ui.js:9` 的 `isAdVisible` 加了判空（原版在推广弹窗 DOM 缺失时会抛异常）。
 
@@ -72,9 +73,10 @@
 | `assets/js/qingyuan-toy-bridge.js` | 新增 `const STANDALONE = true`，`isPlatformPage()` 直接返回 false |
 | `assets/js/qingyuan-unlock-core.js` | `privateUnlocked` 默认 true；`claim()` 直接解锁；`privateLock()` 变空操作；`resetAdSession()` 不再回收辟邪神雷/神雷化形 |
 | `assets/js/qingyuan-unlock-ui.js` | `isAdVisible` 判空 |
-| `assets/js/app.js` | 手部模型路径 `.task` → `.bin`（4972 行） |
+| `assets/js/app.js` | 手部模型路径 `.task` → `.bin`（4972 行）；删除全屏降画质/关阴影/限帧逻辑（644-661 行） |
 | `启动游戏.command` | 新增：自动找端口、起静态服务、打开浏览器 |
-| `tools/shot.mjs` | 新增：Edge 无头验收脚本（加载状态 / 控制台错误 / 截图） |
+| `tools/shot.mjs` | 新增：Edge 无头验收脚本（加载状态 / 控制台错误 / 非黑像素统计 / 截图） |
+| `analysis/limits.md` | 新增：原版 124 条限制点全量审计（80KB，含行号与建议改法），供后续二次开发参考 |
 | `README.md` | 本文件 |
 
 原版备份：`git` 基线 commit `86b9b3c baseline: original mirror`，随时 `git diff` 对照。
@@ -98,7 +100,9 @@
 
 ## 七、验收记录
 
-无头 Edge（SwiftShader WebGL）实测：
+验收脚本：`tools/shot.mjs`（Edge headless，可 `--url` 复用）。最终一次运行（改了全屏画质逻辑之后）：启动 **12997 ms** 进入主界面，`#qingyuan-loading` 已隐藏、`#app-stage` 非 inert，canvas 中心非黑像素 **99.95%**，console error 0、pageerror 0、requestfailed 0，webgl2 可用；此轮之后再复跑了逐项点击测试，10 个按钮全部可开关、`unlocked=10/10`、无报错。
+
+此前一轮（SwiftShader WebGL）逐项实测：
 
 - 启动页正常结束，canvas 1440×900 正常渲染，`window.QingyuanUnlocks` 就绪；
 - `unlocked = 10/10`，`privateUnlocked = true`，逐项 `has()` 全为 true；

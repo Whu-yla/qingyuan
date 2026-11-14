@@ -641,21 +641,24 @@
         });
         function syncRenderPerformance(force=false){
           const fullscreenActive=!!(document.fullscreenElement||document.webkitFullscreenElement||toyBridge.state?.immersive);
-          const handPerformance=fullscreenActive&&STATE.controlMode==='HAND';
+          // 本地复刻：不再因为全屏/手势控制而降低手势识别精度与帧率。
+          const handPerformance=false;
           const viewportPixels=Math.max(1,APP_VIEW.width*APP_VIEW.height);
           // Fullscreen itself can multiply the drawing buffer by several times;
           // hand tracking adds a second GPU/CPU workload on top of it.
-          const ratioCap=fullscreenActive?(isMobile?0.95:1.10):(renderQuality==='ultra'?1.8:1.0);
-          const pixelBudget=fullscreenActive?(isMobile?1.55e6:2.8e6):Infinity;
+          // 本地复刻：全屏不再降低渲染分辨率，画质只由「画质 · 精致/流畅」开关决定。
+          const ratioCap=renderQuality==='ultra'?1.8:1.0;
+          const pixelBudget=Infinity;
           const budgetRatio=Number.isFinite(pixelBudget)?Math.sqrt(pixelBudget/viewportPixels):Infinity;
           const ratio=Math.max(.70,Math.min(window.devicePixelRatio||1,ratioCap,budgetRatio));
           if(force||Math.abs(renderer.getPixelRatio()-ratio)>.01)renderer.setPixelRatio(ratio);
-          const shadows=renderQuality==='ultra'&&!fullscreenActive;
+          const shadows=renderQuality==='ultra';
           if(force||renderer.shadowMap.enabled!==shadows){
             renderer.shadowMap.enabled=shadows;renderer.shadowMap.needsUpdate=true;
           }
           if(fullscreenActive!==performanceMode){
-            performanceMode=fullscreenActive;
+            // 本地复刻：全屏不再限帧。
+            performanceMode=false;
             if(!fullscreenActive)lastPerformanceFrameTime=0;
           }
           handPerformanceMode=handPerformance;

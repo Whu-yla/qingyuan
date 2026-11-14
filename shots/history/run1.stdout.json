@@ -1,0 +1,158 @@
+{
+  "ok": false,
+  "tool": "tools/shot.mjs",
+  "startedAt": "2026-11-14T07:05:24.307Z",
+  "startedAtLocal": "2026-11-14 15:05:24",
+  "url": "http://127.0.0.1:8123/index.html",
+  "channel": "msedge",
+  "headless": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "launchArgs": [
+    "--use-angle=swiftshader",
+    "--enable-unsafe-swiftshader",
+    "--autoplay-policy=no-user-gesture-required",
+    "--use-fake-ui-for-media-stream",
+    "--use-fake-device-for-media-stream",
+    "--ignore-gpu-blocklist"
+  ],
+  "load": {
+    "ready": false,
+    "readyElapsedMs": null,
+    "timedOut": true,
+    "timeline": [
+      {
+        "elapsedMs": 865,
+        "percent": 0,
+        "status": "",
+        "loadingHidden": true,
+        "stageInert": true,
+        "startupState": null,
+        "isError": false
+      }
+    ],
+    "lastState": {
+      "at": 120262,
+      "pct": 0,
+      "pctText": "",
+      "status": "",
+      "hint": "",
+      "loadingHidden": true,
+      "loadingDisplay": "missing",
+      "loadingBusy": null,
+      "stageInert": true,
+      "startupState": null,
+      "isError": false,
+      "retryVisible": false,
+      "ready": false,
+      "docTitle": "视觉手势操控！凡人修仙传《青元剑诀》御剑模拟器！"
+    },
+    "errorState": false,
+    "navError": null,
+    "navStatus": 200
+  },
+  "shots": {
+    "fullPage": {
+      "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+      "bytes": 1292668
+    },
+    "canvas": null,
+    "errors": [
+      "#canvas-container not found"
+    ]
+  },
+  "page": {
+    "title": "视觉手势操控！凡人修仙传《青元剑诀》御剑模拟器！",
+    "url": "https://www.bilibili.com/toy/mtTbBr9KP4X1AIbM/49768046791680-v43233/index.html",
+    "readyState": "complete",
+    "htmlClasses": "",
+    "bodyClasses": "",
+    "viewport": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "dpr": 1
+    },
+    "loadingStatusText": "",
+    "loadingHintText": "",
+    "loadingHidden": true,
+    "stageInert": true,
+    "qingyuanLoadingState": null,
+    "unlockHomeCount": "",
+    "unlockSummaryCount": "",
+    "hasQingyuanUnlocks": false,
+    "hasQingyuanToyBridge": false,
+    "threeRevision": null,
+    "hasThree": false,
+    "canvasCount": 0,
+    "canvases": [],
+    "webgl": {
+      "supported": true,
+      "context": "webgl2",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)",
+      "error": null
+    },
+    "canvasContainer": null
+  },
+  "pixel": {
+    "canvasToDataURL": [],
+    "screenshots": {
+      "fullPage": {
+        "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+        "bytes": 1292668,
+        "width": 1440,
+        "height": 900,
+        "full": {
+          "region": {
+            "x0": 0,
+            "y0": 0,
+            "x1": 1,
+            "y1": 1
+          },
+          "width": 1440,
+          "height": 900,
+          "total": 1296000,
+          "nonBlack": 1221511,
+          "nonBlackRatio": 0.942524,
+          "brightRatio": 0.760246,
+          "avgLuma": 74.674
+        },
+        "center": {
+          "region": {
+            "x0": 0.25,
+            "y0": 0.25,
+            "x1": 0.75,
+            "y1": 0.75
+          },
+          "width": 720,
+          "height": 450,
+          "total": 324000,
+          "nonBlack": 323582,
+          "nonBlackRatio": 0.99871,
+          "brightRatio": 0.943725,
+          "avgLuma": 91.692
+        }
+      }
+    }
+  },
+  "console": {
+    "total": 2,
+    "errorCount": 0,
+    "warningCount": 2,
+    "errors": [],
+    "errorTop": [],
+    "pageErrors": [],
+    "requestFailures": [],
+    "requestFailureTop": []
+  },
+  "conclusion": "FAIL：等待 120000ms 后仍未启动完成，卡在「未知」阶段（进度 0%）。",
+  "durationMs": 187392,
+  "reportPath": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/report.md",
+  "shotPaths": {
+    "fullPage": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+    "canvas": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png"
+  }
+}

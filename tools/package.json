@@ -1,0 +1,10 @@
+{
+  "name": "qingyuan-tools",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Headless Edge acceptance tooling for qingyuan",
+  "dependencies": {
+    "playwright-core": "^1.65.0"
+  }
+}

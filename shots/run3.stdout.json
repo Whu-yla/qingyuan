@@ -1,0 +1,411 @@
+{
+  "ok": true,
+  "tool": "tools/shot.mjs",
+  "startedAt": "2026-11-14T07:12:03.213Z",
+  "startedAtLocal": "2026-11-14 15:12:03",
+  "url": "http://127.0.0.1:8123/index.html",
+  "channel": "msedge",
+  "headless": true,
+  "viewport": {
+    "width": 1440,
+    "height": 900,
+    "deviceScaleFactor": 1
+  },
+  "launchArgs": [
+    "--use-angle=swiftshader",
+    "--enable-unsafe-swiftshader",
+    "--autoplay-policy=no-user-gesture-required",
+    "--use-fake-ui-for-media-stream",
+    "--use-fake-device-for-media-stream",
+    "--ignore-gpu-blocklist"
+  ],
+  "load": {
+    "ready": true,
+    "readyElapsedMs": 12059,
+    "timedOut": false,
+    "timeline": [
+      {
+        "elapsedMs": 531,
+        "percent": 2,
+        "status": "正在准备游戏资源…",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 2572,
+        "percent": 5,
+        "status": "正在加载画面引擎（1 / 13）",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 2825,
+        "percent": 13,
+        "status": "正在加载手势组件（3 / 13）",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 3076,
+        "percent": 21,
+        "status": "正在加载手势组件（5 / 13）",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 3328,
+        "percent": 50,
+        "status": "正在加载音效资源（12 / 13）",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 4948,
+        "percent": 78,
+        "status": "正在凝聚剑光…",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 5200,
+        "percent": 90,
+        "status": "正在准备招式与操控…",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 11806,
+        "percent": 100,
+        "status": "准备就绪，即将进入…",
+        "loadingHidden": false,
+        "stageInert": true,
+        "startupState": "loading",
+        "isError": false
+      },
+      {
+        "elapsedMs": 12059,
+        "percent": 100,
+        "status": "准备就绪，即将进入…",
+        "loadingHidden": true,
+        "stageInert": false,
+        "startupState": "ready",
+        "isError": false
+      }
+    ],
+    "lastState": {
+      "at": 11615,
+      "pct": 100,
+      "pctText": "100%",
+      "status": "准备就绪，即将进入…",
+      "hint": "首次进入需要加载资源，请稍候。准备完成后将自动进入。",
+      "loadingHidden": true,
+      "loadingDisplay": "none",
+      "loadingBusy": "false",
+      "stageInert": false,
+      "startupState": "ready",
+      "isError": false,
+      "retryVisible": false,
+      "ready": true,
+      "docTitle": "青元剑诀 · 月照青元 · B站 Toy"
+    },
+    "errorState": false,
+    "navError": null,
+    "navStatus": 200,
+    "requestedUrl": "http://127.0.0.1:8123/index.html",
+    "finalUrl": "http://127.0.0.1:8123/index.html",
+    "redirected": false,
+    "navigations": [
+      {
+        "at": 484,
+        "url": "http://127.0.0.1:8123/index.html"
+      }
+    ],
+    "documents": [
+      {
+        "at": 462,
+        "url": "http://127.0.0.1:8123/index.html",
+        "status": 200
+      }
+    ]
+  },
+  "shots": {
+    "fullPage": {
+      "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+      "bytes": 1375492
+    },
+    "canvas": {
+      "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png",
+      "bytes": 1373715,
+      "mode": "element"
+    },
+    "errors": []
+  },
+  "page": {
+    "title": "青元剑诀 · 月照青元 · B站 Toy",
+    "url": "http://127.0.0.1:8123/index.html",
+    "readyState": "complete",
+    "htmlClasses": "",
+    "bodyClasses": "",
+    "viewport": {
+      "innerWidth": 1440,
+      "innerHeight": 900,
+      "dpr": 1
+    },
+    "loadingStatusText": "准备就绪，即将进入…",
+    "loadingHintText": "首次进入需要加载资源，请稍候。准备完成后将自动进入。",
+    "loadingHidden": true,
+    "stageInert": false,
+    "qingyuanLoadingState": "ready",
+    "unlockHomeCount": "5/5",
+    "unlockSummaryCount": "5 / 5",
+    "hasQingyuanUnlocks": true,
+    "hasQingyuanToyBridge": true,
+    "threeRevision": "128",
+    "hasThree": true,
+    "canvasCount": 3,
+    "canvases": [
+      {
+        "id": "",
+        "className": "",
+        "parentId": "canvas-container",
+        "width": 1440,
+        "height": 900,
+        "clientWidth": 1440,
+        "clientHeight": 900,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 900
+        },
+        "contextType": "webgl2"
+      },
+      {
+        "id": "webcam-frame",
+        "className": "",
+        "parentId": "webcam-box",
+        "width": 640,
+        "height": 480,
+        "clientWidth": 162,
+        "clientHeight": 122,
+        "rect": {
+          "x": 1255,
+          "y": 23,
+          "width": 162,
+          "height": 122
+        },
+        "contextType": "2d"
+      },
+      {
+        "id": "webcam-canvas",
+        "className": "",
+        "parentId": "webcam-box",
+        "width": 164,
+        "height": 124,
+        "clientWidth": 162,
+        "clientHeight": 122,
+        "rect": {
+          "x": 1255,
+          "y": 23,
+          "width": 162,
+          "height": 122
+        },
+        "contextType": "2d"
+      }
+    ],
+    "webgl": {
+      "supported": true,
+      "context": "webgl2",
+      "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "vendor": "Google Inc. (Google)",
+      "error": null
+    },
+    "canvasContainer": {
+      "clientWidth": 1440,
+      "clientHeight": 900,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 900
+      },
+      "childCount": 1,
+      "html": "<canvas width=\"1440\" height=\"900\" style=\"display: block; width: 1440px; height: 900px;\"></canvas>"
+    }
+  },
+  "pixel": {
+    "canvasToDataURL": [
+      {
+        "id": "",
+        "width": 1440,
+        "height": 900,
+        "method": "toDataURL",
+        "ok": true,
+        "dataUrlBytes": 38334,
+        "sample": {
+          "x": 360,
+          "y": 225,
+          "width": 720,
+          "height": 450,
+          "total": 324000
+        },
+        "nonBlack": 0,
+        "nonBlackRatio": 0,
+        "brightRatio": 0,
+        "avgLuma": 0
+      },
+      {
+        "id": "webcam-frame",
+        "width": 640,
+        "height": 480,
+        "method": "toDataURL",
+        "ok": true,
+        "dataUrlBytes": 10642,
+        "sample": {
+          "x": 160,
+          "y": 120,
+          "width": 320,
+          "height": 240,
+          "total": 76800
+        },
+        "nonBlack": 0,
+        "nonBlackRatio": 0,
+        "brightRatio": 0,
+        "avgLuma": 0
+      },
+      {
+        "id": "webcam-canvas",
+        "width": 164,
+        "height": 124,
+        "method": "toDataURL",
+        "ok": true,
+        "dataUrlBytes": 1282,
+        "sample": {
+          "x": 41,
+          "y": 31,
+          "width": 82,
+          "height": 62,
+          "total": 5084
+        },
+        "nonBlack": 0,
+        "nonBlackRatio": 0,
+        "brightRatio": 0,
+        "avgLuma": 0
+      }
+    ],
+    "screenshots": {
+      "fullPage": {
+        "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+        "bytes": 1375492,
+        "width": 1440,
+        "height": 900,
+        "full": {
+          "region": {
+            "x0": 0,
+            "y0": 0,
+            "x1": 1,
+            "y1": 1
+          },
+          "width": 1440,
+          "height": 900,
+          "total": 1296000,
+          "nonBlack": 1294330,
+          "nonBlackRatio": 0.998711,
+          "brightRatio": 0.805435,
+          "avgLuma": 78.934
+        },
+        "center": {
+          "region": {
+            "x0": 0.25,
+            "y0": 0.25,
+            "x1": 0.75,
+            "y1": 0.75
+          },
+          "width": 720,
+          "height": 450,
+          "total": 324000,
+          "nonBlack": 323813,
+          "nonBlackRatio": 0.999423,
+          "brightRatio": 0.96904,
+          "avgLuma": 91.93
+        }
+      },
+      "canvas": {
+        "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png",
+        "bytes": 1373715,
+        "width": 1440,
+        "height": 900,
+        "full": {
+          "region": {
+            "x0": 0,
+            "y0": 0,
+            "x1": 1,
+            "y1": 1
+          },
+          "width": 1440,
+          "height": 900,
+          "total": 1296000,
+          "nonBlack": 1294484,
+          "nonBlackRatio": 0.99883,
+          "brightRatio": 0.809952,
+          "avgLuma": 79.067
+        },
+        "center": {
+          "region": {
+            "x0": 0.25,
+            "y0": 0.25,
+            "x1": 0.75,
+            "y1": 0.75
+          },
+          "width": 720,
+          "height": 450,
+          "total": 324000,
+          "nonBlack": 323839,
+          "nonBlackRatio": 0.999503,
+          "brightRatio": 0.971204,
+          "avgLuma": 91.874
+        }
+      }
+    }
+  },
+  "console": {
+    "total": 4,
+    "errorCount": 0,
+    "warningCount": 4,
+    "errors": [],
+    "errorTop": [],
+    "pageErrors": [],
+    "requestFailures": [],
+    "requestFailureTop": []
+  },
+  "conclusion": "PASS：启动完成并进入主界面，画面非黑（截图中心非黑像素比例 99.94%，Canvas toDataURL 采样最大 0.00%）。",
+  "durationMs": 63805,
+  "reportPath": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/report.md",
+  "timings": {
+    "launchMs": 283,
+    "navMs": 516,
+    "readyMs": 12059,
+    "postWaitMs": 15059,
+    "screenshotsMs": 29396,
+    "pixelAnalysisMs": 123,
+    "closeMs": 1996
+  },
+  "shotPaths": {
+    "fullPage": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+    "canvas": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png"
+  }
+}

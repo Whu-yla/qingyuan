@@ -94,6 +94,7 @@
 | `启动游戏.command` | 新增：自动找端口、起静态服务、打开浏览器 |
 | `tools/shot.mjs` | 新增：Edge 无头验收脚本（加载状态 / 控制台错误 / 非黑像素统计 / 截图） |
 | `analysis/limits.md` | 新增：原版 124 条限制点全量审计（含行号与建议改法），供二次开发参考 |
+| `analysis/improvements.md` | 新增：19 条改进提案（手感 / 玩法 / 视觉 / 性能 / 工程，含文件行号、改法、收益与风险）+ 推荐 TOP5 与三个不建议做的方向 |
 | `README.md` | 本文件 |
 
 原版备份：git 基线 commit `86b9b3c baseline: original mirror`，随时 `git diff` 对照。

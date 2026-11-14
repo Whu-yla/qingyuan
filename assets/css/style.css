@@ -667,7 +667,7 @@
       #qingyuan-copyright-corners .copyright-left { left: max(7px, var(--app-safe-left, env(safe-area-inset-left, 0px))); }
       #qingyuan-copyright-corners .copyright-right { right: max(7px, var(--app-safe-right, env(safe-area-inset-right, 0px))); }
 
-      /* Toy 返回的是 CSS px；随页面补偿转向映射至逻辑四边。 */
+      /* 宿主返回的是 CSS px；随页面补偿转向映射至逻辑四边。 */
       #app-stage {
         --app-safe-top: env(safe-area-inset-top, 0px);
         --app-safe-right: env(safe-area-inset-right, 0px);
@@ -994,7 +994,7 @@
       #app-stage.mobile-layout.is-landscape .unlock-footer {padding:7px 18px 9px;}
 
 
-      /* Invite cards use the official Toy QR image; the exported PNG includes its quiet zone. */
+      /* 邀请卡不再使用任何外部素材。 */
       .invite-home-button {margin-top:7px;background:linear-gradient(110deg,#243d37,#26362d);border-color:#c8bc8052;}
       .invite-home-button small {font-size:10px;color:#d6c997;letter-spacing:0;white-space:nowrap;}
       .invite-overlay {

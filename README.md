@@ -1,8 +1,7 @@
-# 青元剑诀 · 本地复刻（完整解锁版）
+# 青元剑诀 · 本地完整解锁版
 
-> 原版：B站 Toy「视觉手势操控！凡人修仙传《青元剑诀》御剑模拟器！」
-> 原地址：https://www.bilibili.com/toy/mtTbBr9KP4X1AIbM/index.html
-> 本地版：Three.js r128 + MediaPipe HandLandmarker 单页应用，全部资源离线，双击即玩。
+> 本目录是 3D 御剑模拟器《青元剑诀》的离线镜像，并在其基础上完成了「完整解锁」与「去品牌化」两项改造。
+> 技术栈：Three.js r128 + MediaPipe HandLandmarker（手势识别）+ 原生 Web Audio。全部资源已本地化，单页应用，双击即玩。
 
 ## TL;DR
 
@@ -10,20 +9,22 @@
 |---|---|
 | 启动方式 | 双击 `启动游戏.command`，浏览器自动打开 http://127.0.0.1:8123/index.html |
 | 10 项剑诀功能 | **全部默认解锁**，随时可开（赏剑 / 大庚 / 巨剑 / 莲花 / 辟邪神雷 / 神雷化形 / 流云剑气 / 剑影分光 / 手势控制 / 灵力调节） |
-| 关注 / 邀请 / 三连 / 看广告 | 全部移除，无需任何操作，无倒计时、无校验、无外部跳转 |
-| B站 Toy SDK | 已移除，摄像头改走浏览器原生 `getUserMedia` |
-| 防盗链跳转 | 已移除（原版检测到"不在 B站 iframe 内"就 `location.replace` 回 B 站，本地版删掉了这一步） |
+| 解锁任务 / 邀请 / 三连 / 看广告 | 代码层整模块删除：无入口、无倒计时、无校验、无外力跳转 |
+| 平台 SDK / 防盗链 | 已移除，摄像头改走浏览器原生 `getUserMedia` |
+| 作者署名与水印 | 启动页署名、四角 DOM 水印、3D 画面暗水印、页脚版权、推广二维码全部删除 |
 | 联网需求 | **零外部请求**：模型、wasm、音效、贴图全在本地（已用无头浏览器验证） |
-| 体积 | 约 34 MB（assets），完整目录 67 MB（含验收工具依赖） |
+| 体积 | assets 约 34 MB；完整目录约 75 MB（含 `.git`、截图与验收工具依赖） |
 
 ## 一、怎么跑
 
 1. 双击 `启动游戏.command`（第一次可能被 macOS Gatekeeper 拦：右键 → 打开）。
 2. 浏览器打开 http://127.0.0.1:8123/index.html ，等加载条走完即进入。
 3. 手动起服务（等价）：
+
    ```bash
    cd qingyuan && python3 -m http.server 8123 --bind 127.0.0.1
    ```
+
    Windows：`python -m http.server 8123`，然后访问 http://127.0.0.1:8123/ 。
 4. 手势控制：点左上"开启手势控制" → 允许摄像头。**必须用 127.0.0.1 或 localhost 访问**（浏览器只在这两种地址下把 http 当安全上下文，局域网 IP 会拿不到摄像头）。
 
@@ -33,23 +34,38 @@
 
 | # | 原版限制 | 原版行为 | 现在的行为 | 改动位置 |
 |---|---|---|---|---|
-| 1 | 防盗链跳转 | 页面不在 B站 iframe 内时立即 `window.location.replace` 回 B站原页，本地根本进不去 | 已删除 | index.html:224 |
-| 2 | 关注作者解锁 | 关注"灰森森森"才解锁 大庚剑阵/巨剑术/莲花剑阵 | 默认解锁 | assets/js/qingyuan-unlock-core.js:82 |
-| 3 | 推广倒计时解锁 | 点 UP主推广弹窗等待 5 秒才解锁 辟邪神雷/神雷化形（且仅本次进入有效） | 默认解锁、常驻不回收 | qingyuan-unlock-core.js:82,286 |
-| 4 | 三连解锁 | 给 BV1d44q6YEGK 一键三连才解锁 流云剑气/剑影分光；任意 2 条视频三连才解锁 手势控制/灵力调节 | 默认解锁 | qingyuan-unlock-core.js:82,253-262 |
-| 5 | 邀请好友解锁 | 成功邀请 1 名好友才解锁 赏剑模式 | 默认解锁 | qingyuan-unlock-core.js:82 |
-| 6 | 私测密码 | 需在操作说明里输 8 位密码才能全开 | 已删掉密码入口，启动即全开 | index.html:817-824（原块已删除） |
-| 7 | 解锁按钮/入口 | 首页"解锁任务 0/5"、邀请好友、UP主推广三个入口 | 全部 `display:none` 隐藏（DOM 保留，代码引用不报错） | index.html:613,645,646,647 |
-| 8 | B站 Toy 摄像头授权 | 判定为平台页时摄像头必须走 `window.toy.requestCamera`，本机没有 SDK 就直接报 TOY_SDK_UNAVAILABLE | 强制判定为非平台页，走浏览器原生 `getUserMedia` | assets/js/qingyuan-toy-bridge.js:12-14 |
-| 9 | B站 Toy SDK 脚本 | 每次打开都从 `s1.hdslb.com` 拉 SDK | 已移除该 script | index.html:538 |
-| 10 | 任务校验链路 | 每 30 秒调 B站接口核验关注/三连/邀请，失败就提示"无法核验" | 校验整体短路，任何入口直接解锁 | qingyuan-unlock-core.js:253-262 |
-| 11 | 模型 404 | 手部模型原先固定读 `hand_landmarker.task`（服务器已 404，靠远程兜底） | 本地直接指向 `.bin`，零 404、零远程回退 | index.html:534, assets/js/app.js:4972 |
-| 12 | 解锁相关文案 | 说明里写"完成任务才能解锁" | 改写为"完整解锁版"说明 | index.html:815 |
-| 13 | 全屏画质/帧率降级 | 一进全屏就把像素比压到 1.10、关掉阴影、限帧 45fps（手势模式 30fps） | 全屏与窗口画质完全一致，不限帧；画质只由"精致/流畅"开关决定 | assets/js/app.js:644-661 |
+| 1 | 防盗链跳转 | 页面不在平台 iframe 内时立即 `window.location.replace` 回原站发布页，本地根本进不去 | 已删除 | index.html head |
+| 2 | 关注作者解锁 | 关注作者账号才解锁 大庚剑阵 / 巨剑术 / 莲花剑阵 | 默认解锁 | assets/js/qingyuan-unlock-core.js |
+| 3 | 推广倒计时解锁 | 点推广浮层等 5 秒才解锁 辟邪神雷 / 神雷化形（且仅本次进入有效） | 默认解锁、常驻不回收 | 同上 |
+| 4 | 三连解锁 | 给指定视频一键三连才解锁 流云剑气 / 剑影分光；给任意 2 条视频三连才解锁 手势控制 / 灵力调节 | 默认解锁 | 同上 |
+| 5 | 邀请好友解锁 | 成功邀请 1 名好友才解锁 赏剑模式 | 默认解锁 | 同上 |
+| 6 | 私测密码 | 需在操作说明里输 8 位密码才能全开 | 密码入口整块删除，启动即全开 | index.html |
+| 7 | 解锁 / 推广入口 | 解锁任务面板、邀请卡、作者推广浮层三个 overlay 及其入口按钮 | 整块删除，DOM 不再存在 | index.html |
+| 8 | 平台摄像头授权 | 判定为平台内嵌页时摄像头必须走宿主 SDK，没有 SDK 直接失败 | 强制走浏览器原生 `getUserMedia` | assets/js/qingyuan-toy-bridge.js |
+| 9 | 平台 SDK 脚本 | 每次打开都从外站 CDN 拉平台 SDK | 已移除该脚本 | index.html |
+| 10 | 任务校验链路 | 每 30 秒调外站接口核验关注 / 三连 / 邀请，失败就提示"无法核验" | 校验模块整体删除，只留最小接口 | assets/js/qingyuan-unlock-core.js |
+| 11 | 模型 404 | 手部模型原先固定读 `hand_landmarker.task`（服务器已 404，靠远程兜底） | 本地直接指向 `.bin`，零 404、零远程回退 | index.html, assets/js/app.js |
+| 12 | 解锁相关文案 | 说明里写"完成任务才能解锁" | 改写为"全部默认可用"说明 | index.html |
+| 13 | 全屏画质 / 帧率降级 | 一进全屏就把像素比压到 1.10、关掉阴影、限帧 45fps（手势模式 30fps） | 全屏与窗口画质完全一致，不限帧；画质只由"精致 / 流畅"开关决定 | assets/js/app.js |
 
-补充：`assets/js/qingyuan-unlock-ui.js:9` 的 `isAdVisible` 加了判空（原版在推广弹窗 DOM 缺失时会抛异常）。
+## 三、去品牌化清单（本次新增）
 
-## 三、玩法速查
+| 位置 | 原内容 | 处置 |
+|---|---|---|
+| 页面 `<title>` / `<meta>` | 标题、author、copyright、description 带平台与作者信息 | 改为中性标题与描述，删除 author / copyright |
+| 启动页 `.qy-loading-credit` | 平台 · 作者署名 | 整行删除 |
+| 四角水印 `#qingyuan-copyright-corners` | 四角常驻 DOM 水印 | 整块删除 |
+| 3D 画面暗水印 | WebGL 中 512×256 画布文字纹理，opacity 0.008 随场景输出 | 整块删除，渲染函数变空操作 |
+| 解锁面板 / 邀请卡 / 推广浮层 | 三块 overlay，含推广链接与作者二维码 | 整块删除，二维码图片一并删除 |
+| 推广脚本 / 邀请脚本 / 解锁 UI 脚本 / 私测密码脚本 | 4 个 JS 模块 | 删除，解锁核心改写为约 50 行无网络 stub |
+| 外站 SDK 脚本与品牌注释 | 平台与作者相关字样 | 删除 / 中性化 |
+| 摄像头诊断与引导文案 | 提示语中出现平台与作者信息 | 改为"浏览器 / 页面 / 宿主"等中性表述 |
+| 加载阶段名 | "正在加载解锁任务" | 改为"正在加载剑诀模块" |
+| README / 审计报告 / 验收日志 | 平台名、作者名、外站链接 | 全文替换为"原版 / 原作者 / 原站" |
+
+复验：对全目录做一次全文检索，原平台名、原作者名与外站域名均为 0 命中（HTML、JS、CSS、JSON、Markdown 与截图均已清理）。
+
+## 四、玩法速查
 
 | 操作 | 效果 |
 |---|---|
@@ -57,61 +73,62 @@
 | Q / R / E / T / F / G | 莲花剑阵 / 青元剑盾 / 大庚剑阵 / 巨剑术 / 神雷化形 / 剑影分光（按一次开、再按一次关） |
 | 1 / 2 / 3 / 4 | 分光 / 辟邪神雷 / 流云剑气 / "关后"保留 72 主剑 |
 | H | 赏剑模式（拖动旋转、滚轮缩放） |
-| WASD + 空格/Ctrl + Shift | 飞行移动（空格上升、Ctrl 下降、Shift 两倍速） |
+| WASD + 空格 / Ctrl + Shift | 飞行移动（空格上升、Ctrl 下降、Shift 两倍速） |
 | V / C | 自由视角 / 视角复位 |
 | 鼠标中键 或 Alt+左键拖动 | 360° 环视 |
 | F1 | 操作说明 |
 | 底部招式按钮 | 触屏 / 鼠标直接点，均可自由开关 |
 
-手势（点"开启手势控制"后）：剑指=御剑、五指张开=莲花、握拳=剑盾、食指+小指=大庚、L/八字手=巨剑术。
+手势（点"开启手势控制"后）：剑指 = 御剑、五指张开 = 莲花、握拳 = 剑盾、食指 + 小指 = 大庚、L / 八字手 = 巨剑术。
 
-## 四、改动清单（文件级）
+## 五、改动清单（文件级）
 
 | 文件 | 改了什么 |
 |---|---|
-| `index.html` | 删防盗链跳转；删 Toy SDK 外部脚本；隐藏 3 个解锁/推广入口与"解锁任务"菜单项；删除私测密码块；手部模型改指 `.bin`；改写解锁说明文案 |
-| `assets/js/qingyuan-toy-bridge.js` | 新增 `const STANDALONE = true`，`isPlatformPage()` 直接返回 false |
-| `assets/js/qingyuan-unlock-core.js` | `privateUnlocked` 默认 true；`claim()` 直接解锁；`privateLock()` 变空操作；`resetAdSession()` 不再回收辟邪神雷/神雷化形 |
-| `assets/js/qingyuan-unlock-ui.js` | `isAdVisible` 判空 |
-| `assets/js/app.js` | 手部模型路径 `.task` → `.bin`（4972 行）；删除全屏降画质/关阴影/限帧逻辑（644-661 行） |
+| `index.html` | 删防盗链跳转、平台 SDK、三块解锁 / 推广 overlay、四角水印、启动页署名；删解锁入口与私测密码；手部模型改指 `.bin`；改写说明与加载阶段文案；删 4 个营销 / 解锁 UI 脚本与解锁配置 JSON |
+| `assets/js/qingyuan-unlock-core.js` | 整文件改写为约 50 行无网络 stub：`has/require` 恒真、`setHooks` 兼容、无任务 / 账号 / 邀请 / 三连 / 推广逻辑 |
+| `assets/js/qingyuan-toy-bridge.js` | `STANDALONE = true`，`isPlatformPage()` 直接返回 false；删平台域名判定、平台 UA 判定与平台 SDK 监听 |
+| `assets/js/app.js` | 手部模型路径 `.task` → `.bin`；删除全屏降画质 / 关阴影 / 限帧逻辑；删除 WebGL 作者暗水印；移除对已删模块的调用并加空值保护；摄像头诊断文案中性化 |
+| `assets/css/style.css` | 两处带品牌字样的注释中性化 |
+| 删除文件 | `qingyuan-unlock-ui.js`、`qingyuan-invitation.js`、`qingyuan-author-promo.js`、`qingyuan-private-unlock.js`、`assets/images/author-qr.png` |
 | `启动游戏.command` | 新增：自动找端口、起静态服务、打开浏览器 |
 | `tools/shot.mjs` | 新增：Edge 无头验收脚本（加载状态 / 控制台错误 / 非黑像素统计 / 截图） |
-| `analysis/limits.md` | 新增：原版 124 条限制点全量审计（80KB，含行号与建议改法），供后续二次开发参考 |
+| `analysis/limits.md` | 新增：原版 124 条限制点全量审计（含行号与建议改法），供二次开发参考 |
 | `README.md` | 本文件 |
 
-原版备份：`git` 基线 commit `86b9b3c baseline: original mirror`，随时 `git diff` 对照。
+原版备份：git 基线 commit `86b9b3c baseline: original mirror`，随时 `git diff` 对照。
 
-## 五、与原版的差异（保留了什么）
+## 六、与原版的差异（保留了什么）
 
 - 视觉、场景、建筑、剑阵、音效、手势识别模型：全部 1:1 原样保留。
-- 招式依赖照旧：**神雷化形仍需先开"辟邪神雷"**（这是招式链设计，不是解锁限制，故未改）；"关后"开关、画质 精致/流畅 等原版设置都保留。
+- 招式依赖照旧：**神雷化形仍需先开"辟邪神雷"**（这是招式链设计，不是解锁限制，故未改）；"关后"开关、画质 精致 / 流畅 等原版设置都保留。
 - 音效默认静音（原版设计如此，每次进入从静音开始），点左下"音效：关"切换。
-- 画面四角的"B站 · 灰森森森"是原作者署名水印，未删。
+- 原版右上角调试 / 摄像头预览窗口保留（可点右上"−"收起）。
 
-## 六、已知限制与风险分级
+## 七、已知限制与风险分级
 
 | 级别 | 说明 | 处置 |
 |---|---|---|
 | 🟡 | 摄像头只在 `127.0.0.1` / `localhost`（或 HTTPS）下可用；用局域网 IP 打开会提示"页面不允许申请摄像头" | 用启动器给出的地址访问 |
 | 🟡 | macOS 首次双击 `.command` 可能提示"无法验证开发者" | 右键 → 打开，或 `chmod +x` 后从终端运行 |
-| 🟡 | 手势识别吃 GPU/CPU，集显老机器可能掉帧 | 用"画质 · 流畅"，或改用键鼠 |
+| 🟡 | 手势识别吃 GPU / CPU，集显老机器可能掉帧 | 用"画质 · 流畅"，或改用键鼠 |
 | 🟢 | 远程兜底 CDN（jsdelivr / unpkg / storage.googleapis）仍在代码里作最后手段 | 正常离线使用不会触发；本地资源已齐全 |
-| 🟢 | 原版隐藏的解锁面板 DOM（`#unlock-overlay` 等）仍在页内但无入口 | 保留是为了不让 `app.js` 引用报错，不影响使用 |
 
-## 七、验收记录
+## 八、验收记录
 
-验收脚本：`tools/shot.mjs`（Edge headless，可 `--url` 复用）。最终一次运行（改了全屏画质逻辑之后）：启动 **12997 ms** 进入主界面，`#qingyuan-loading` 已隐藏、`#app-stage` 非 inert，canvas 中心非黑像素 **99.95%**，console error 0、pageerror 0、requestfailed 0，webgl2 可用；此轮之后再复跑了逐项点击测试，10 个按钮全部可开关、`unlocked=10/10`、无报错。
+验收脚本：`tools/shot.mjs`（Edge headless，可 `--url` 复用）。最近一次运行：启动 **11.8 s** 进入主界面，`#qingyuan-loading` 已隐藏、`#app-stage` 非 inert，canvas 1440×900，截图中心非黑像素 **99.94%**，console error 0、pageerror 0、requestfailed 0，webgl2 可用，结论 PASS。
 
-此前一轮（SwiftShader WebGL）逐项实测：
+逐项冒烟测试（同一套无头环境）：
 
-- 启动页正常结束，canvas 1440×900 正常渲染，`window.QingyuanUnlocks` 就绪；
-- `unlocked = 10/10`，`privateUnlocked = true`，逐项 `has()` 全为 true；
-- 逐个点击底部招式按钮：巨剑术、剑影分光、关后、辟邪神雷全部可开关，无 console error、无 pageerror；
-- 摄像头通路：`contextState=普通浏览器 · 安全访问检查`、`streamState=摄像头已开启`、`modelState=手势识别已就绪 · 加速模式`、`errorCode=无`；
-- 网络：除 127.0.0.1 外**零外部请求**；静态服务无 404（修掉 `.task` 后）。
+- 标题 `青元剑诀 · 月照青元`，页面可见文本中品牌字样计数 **0**；
+- `window.QingyuanUnlocks` 就绪，`unlocked = 10/10`，十项 `has()` 全 true；
+- 三块解锁 / 推广 overlay、三个入口按钮、推广入口在 DOM 中均为 missing（已删除）；
+- 底部招式按钮逐个点击全部生效（巨剑术、剑影分光、关后、辟邪神雷等可自由开关），无 console error、无 pageerror；
+- 网络：除 127.0.0.1 外**零外部请求**；静态服务无 404；
+- 摄像头通路：`camera-stream-state = 摄像头已开启`、`camera-model-state = 手势识别已就绪 · 加速模式`、`camera-error-code = 无`。
 
 截图见 `screenshots/`。
 
-## 八、来源与使用声明
+## 九、来源与使用声明
 
-本目录是原游戏的离线镜像 + 去限制改动，仅作个人学习、离线体验与前端技术研究；游戏内容、模型、美术、音效版权归原作者（B站 UP主 灰森森森）所有，请勿二次分发或商用。
+本目录是原游戏的离线镜像 + 完整解锁 + 去品牌化改造，仅作个人学习、离线体验与前端技术研究；游戏内容、模型、美术、音效版权归原作者所有，请勿二次分发或商用。

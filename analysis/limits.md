@@ -1,6 +1,6 @@
 # 青元剑诀 · 限制点审计（limits.md）
 
-> 审计对象：本机镜像 `/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan`（B站 Toy「青元剑诀」御剑模拟器）。
+> 审计对象：本机镜像 `/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan`（原版平台「青元剑诀」御剑模拟器）。
 > 审计口径：只读源码，不修改除本文件外的任何文件；未触碰 127.0.0.1:8123 静态服务器。
 
 ## 0. 审计快照与行号基准（务必先读）
@@ -16,11 +16,11 @@
 
 **为什么两种基准混用**：负责「取消限制」的实现 agent 正在同一工作区改这 4 个文件，行号在审计过程中发生位移（`index.html` 68040B → 67174B）。要 1:1 对照原版限制，必须以基线行号为准；本文件对每条同时标注「现状：已移除 / 已改 / 仍在」，避免把已拆掉的门禁当成待办。
 
-**0.2 最终复核（15:12 CST，`sed`/`grep` 实测）**：`window.location.replace` 与 `bilibili-toy-sdk` 在现行 `index.html` 中**已无任何命中**（A1 跳转段、A2 SDK 已整段删除，非仅注释）；`#unlock-menu-open` 已整块删除；`#unlock-home-open`(#645)、`#invite-home-open`(#646)、`.author-promo-entry`(#647) 为 `style="display:none"`；`hand-model-resource`(#534) 的 href 已由实现者改成 `./assets/hand/hand_landmarker.bin`（H8 的 HTML 侧已修，`app.js` 侧 `HAND_ASSET_PATHS` 仍写 `.task`）；`#author-ai-open` 仍在 #648（随 #647 容器一起隐藏）。`app.js` 关键行号（346/574/578/4198/4224/4236/5074/5121/5247/5333/6329/6462/6549-6555）实测全部与文中一致。
+**0.2 最终复核（15:12 CST，`sed`/`grep` 实测）**：`window.location.replace` 与 `platform-toy-sdk` 在现行 `index.html` 中**已无任何命中**（A1 跳转段、A2 SDK 已整段删除，非仅注释）；`#unlock-menu-open` 已整块删除；`#unlock-home-open`(#645)、`#invite-home-open`(#646)、`.author-promo-entry`(#647) 为 `style="display:none"`；`hand-model-resource`(#534) 的 href 已由实现者改成 `./assets/hand/hand_landmarker.bin`（H8 的 HTML 侧已修，`app.js` 侧 `HAND_ASSET_PATHS` 仍写 `.task`）；`#author-ai-open` 仍在 #648（随 #647 容器一起隐藏）。`app.js` 关键行号（346/574/578/4198/4224/4236/5074/5121/5247/5333/6329/6462/6549-6555）实测全部与文中一致。
 
 ### 0.1 总根因（一句话）
 
-原版是**任务换解锁**的经济系统：`qingyuan-unlock-core.js` 用 5 个任务（邀请好友 / 关注作者 / 看 5 秒推广 / 给视频三连 / 给任意 2 条视频三连）产出 10 项功能（`inspect/dageng/giant/lotus/lightning/dragon/qi/split/hand/fx`），`qingyuan-unlock-ui.js` 的 `applyLocks()` 给 DOM 加 `.is-feature-locked` 并在 capture 阶段吞掉点击，`app.js` 在 10 处 `unlocks.has/require` 执行硬门禁，解锁进度只存 B站云存储，且私测密码 `2464054180` 可一次全开。**只要把 `privateUnlocked` 置真（或让 `has()` 恒真）即可一次性废掉全部 10 项门禁**——现有补丁正是这么做的，但残留死代码与 3 个无效脚本，且画质、手势、音效、启动等**非解锁型限制完全没动**。
+原版是**任务换解锁**的经济系统：`qingyuan-unlock-core.js` 用 5 个任务（邀请好友 / 关注作者 / 看 5 秒推广 / 给视频三连 / 给任意 2 条视频三连）产出 10 项功能（`inspect/dageng/giant/lotus/lightning/dragon/qi/split/hand/fx`），`qingyuan-unlock-ui.js` 的 `applyLocks()` 给 DOM 加 `.is-feature-locked` 并在 capture 阶段吞掉点击，`app.js` 在 10 处 `unlocks.has/require` 执行硬门禁，解锁进度只存 原平台云存储，且私测密码 `2464054180` 可一次全开。**只要把 `privateUnlocked` 置真（或让 `has()` 恒真）即可一次性废掉全部 10 项门禁**——现有补丁正是这么做的，但残留死代码与 3 个无效脚本，且画质、手势、音效、启动等**非解锁型限制完全没动**。
 
 ---
 
@@ -30,12 +30,12 @@
 
 | # | 限制项 | 文件:行号 | 现象 | 建议改法 | 风险 |
 |---|---|---|---|---|---|
-| 1 | 非 iframe 强制跳回 B站 | `index.html:224`（基线） | 本地 top-level 打开立即 replace 到 bilibili.com，游戏进不去 | 删除整段 `window.self===window.top` 跳转 | 🔴（已移除） |
-| 2 | B站 Toy SDK 硬依赖 | `index.html:538`（基线） | 加载 `toy-sdk.js`；摄像头/云存档/邀请卡/平台能力全挂它 | 删 SDK script；改用浏览器 `getUserMedia`（toy-bridge 已加 STANDALONE） | 🔴（已移除） |
+| 1 | 非 iframe 强制跳回 原平台 | `index.html:224`（基线） | 本地 top-level 打开立即 replace 到 原站域名，游戏进不去 | 删除整段 `window.self===window.top` 跳转 | 🔴（已移除） |
+| 2 | 原版平台 SDK 硬依赖 | `index.html:538`（基线） | 加载 `toy-sdk.js`；摄像头/云存档/邀请卡/平台能力全挂它 | 删 SDK script；改用浏览器 `getUserMedia`（toy-bridge 已加 STANDALONE） | 🔴（已移除） |
 | 3 | 解锁任务主入口 | `index.html:645`（基线） | 主界面常驻「🔒 解锁任务 · 更多剑诀 0/5」 | 删按钮 + `#unlock-home-count`，改由招式栏直接开关 | 🟡（已隐藏） |
 | 4 | 解锁菜单入口 | `index.html:613`（基线） | 界面管理里「解锁任务 · 更多剑诀」 | 同上 | 🟡（已隐藏） |
 | 5 | 邀请好友入口 | `index.html:646`（基线） | 「✦ 邀请好友来御剑 / 授权生成邀请卡」 | 删；`inspect`（赏剑）直接默认可用 | 🟡（已隐藏） |
-| 6 | 作者推广入口 + 5 秒倒计时 | `index.html:647-648, 760-783, 830`（基线） | 「UP主同款游戏点击立即制作！」+ 关不掉的 5 秒广告计时 | 删 DOM + 删 author-promo 脚本 + 删 render 倒计时产物 | 🟡（入口已隐藏，脚本仍在） |
+| 6 | 作者推广入口 + 5 秒倒计时 | `index.html:647-648, 760-783, 830`（基线） | 「作者同款游戏点击立即制作！」+ 关不掉的 5 秒广告计时 | 删 DOM + 删 author-promo 脚本 + 删 render 倒计时产物 | 🟡（入口已隐藏，脚本仍在） |
 | 7 | 私测密码门 | `index.html:818-823`（基线）+ `qingyuan-private-unlock.js:11` | 密码 `2464054180` 一次全开 10 项；关页面即失效（pagehide 清除） | 删表单 DOM；或改 `privateUnlocked` 默认 true 并删密码脚本 | 🟡（表单已删，脚本空转） |
 | 8 | 10 项功能总闸 | `qingyuan-unlock-core.js:81,83`（基线） | `privateUnlocked=false`，`isUnlocked()` 只认 `unlocked` Set | `let privateUnlocked=true`（现状已改）或 `isUnlocked→return known.has(id)` | 🔴（已改） |
 | 9 | DOM 点击锁 | `qingyuan-unlock-ui.js:77-79, 250-252`（基线） | `.is-feature-locked` 虚框 + 🔒 + capture 拦截点击并弹任务面板 | 删锁定分支与 capture 监听（或 `has()` 恒真后自然失效） | 🔴（已失效，代码仍在） |
@@ -61,7 +61,7 @@
 | 29 | .task 模型缺失 | `index.html:534` + `app.js:4972` | 声明 `hand_landmarker.task` 但目录只有 `.bin` | 已靠候选回退到 `.bin`；建议显式改路径并同步完整性表 | 🟡 |
 | 30 | 启动失败即卡死 | `qingyuan-loading.js:10,42,95-98,114-126` | 任一 `data-startup` 资源失败/60s 超时 → 错误页+输入拦截 | 改为「核心失败才阻塞，组件失败可跳过」 | 🔴（仍在） |
 | 31 | 启动期吞掉全部输入 | `qingyuan-loading.js:11,18-23` | ready 前 capture 拦截 13 类事件并 preventDefault | 保留但别拦 F5/F12 | 🟢 |
-| 32 | 邀请卡 SDK 依赖 | `qingyuan-invitation.js:37-49,150-189` | 无 `window.toy` 等 7s 后失败，提示「请在 B站 Toy 页面打开」 | 本地版删邀请组件与入口 | 🟡 |
+| 32 | 邀请卡 SDK 依赖 | `qingyuan-invitation.js:37-49,150-189` | 无 `window.toy` 等 7s 后失败，提示「请在 原版平台 页面打开」 | 本地版删邀请组件与入口 | 🟡 |
 | 33 | 解锁进度只存云 | `qingyuan-unlock-core.js:141-143,240` | `getCloudStorage/setCloudStorage`，无 SDK 不保存 | 改 localStorage（`qy_ul_v1_` 前缀现成） | 🟡 |
 | 34 | 30s/60s 刷新节流 | `qingyuan-unlock-core.js:156,260` | 手动刷新 30s 内无效；claim 前 60s 才强刷 | 移除（已全解锁则无意义） | 🟢 |
 | 35 | 5 秒广告任务 | `qingyuan-unlock-core.js:264-276` | 必须保持弹窗可见累计 5000ms 才 `localAd=true` | 整段删除（配合删 author-promo） | 🟡 |
@@ -82,20 +82,20 @@
 
 ### A. 解锁/营销门禁（对应任务 a；全部应彻底移除）
 
-#### A1 `index.html:224`（基线）非 iframe 强制跳回 B站
+#### A1 `index.html:224`（基线）非 iframe 强制跳回 原平台
 ~~~html
-<script>if(window.self===window.top){window.location.replace("https://www.bilibili.com/toy/mtTbBr9KP4X1AIbM/49768046791680-v43233/index.html");}</script>
+<script>if(window.self===window.top){window.location.replace("原站发布页");}</script>
 ~~~
 语义：防盗链 + 引流门禁；本地双击打开（top-level）必被 replace，游戏根本进不去。
 判定：**【营销型 → 彻底移除】**。现状：**已移除**（现行 L224 为「本地复刻：移除…」注释）。
 补丁：无（已做）；建议连注释一起删，避免读者误以为还有跳转。HTML：否。
 
-#### A2 `index.html:538`（基线）加载 B站 Toy SDK
+#### A2 `index.html:538`（基线）加载 原版平台 SDK
 ~~~html
-<script id="bilibili-toy-sdk" async src="https://s1.hdslb.com/bfs/seed/toy/app/sdk/toy-sdk.js"></script>
+<script id="platform-toy-sdk" async src="https://原站CDN/bfs/seed/toy/app/sdk/toy-sdk.js"></script>
 ~~~
 语义：整条平台能力链（`window.toy`：摄像头、云存储、关注/三连核验、导航、二维码、分享）入口；离线/CDN 失败时大量功能降级。
-判定：**【平台依赖 → 移除】**。现状：**已移除**（现行 L538 为注释「本地复刻：不加载 B站 Toy SDK…」）。
+判定：**【平台依赖 → 移除】**。现状：**已移除**（现行 L538 为注释「本地复刻：不加载 原版平台 SDK…」）。
 补丁：无（已做）。**联动**：`qingyuan-invitation.js:37-49` 的 `waitForSdk` 现在找不到脚本元素，7 秒后必然 reject → 邀请卡实际已死；`qingyuan-loading.js` 的 sources 只收 `script[data-startup][src]`，SDK 本来就不阻塞启动。HTML/CSS：否。
 
 #### A3 `index.html:645`（基线）解锁任务主入口常驻主界面
@@ -123,10 +123,10 @@
 #### A6 `index.html:647-648, 830`（基线）作者推广入口（5 秒广告前置）
 ~~~html
 <div class="author-promo-entry">
-  <button id="author-ai-open" class="author-promo-button" type="button" aria-haspopup="dialog" aria-controls="author-ai-card" aria-expanded="false">✦ UP主同款游戏点击立即制作！</button>
+  <button id="author-ai-open" class="author-promo-button" type="button" aria-haspopup="dialog" aria-controls="author-ai-card" aria-expanded="false">✦ 作者同款游戏点击立即制作！</button>
 ~~~
-语义：点它打开作者站点 `https://aish.chatopens.vip` 浮层，同时 `qingyuan-author-promo.js:85` 调 `QingyuanUnlocks.recordAdClick()` 启动 5 秒倒计时，是 `lightning/dragon` 的唯一正路。
-判定：**【营销型 → 彻底移除】**。现状：**入口已隐藏**（现行 L647 `display:none`），**脚本仍在**（基线 L830 / 现行 L822 仍被 loading.js 注入）。
+语义：点它打开作者站点浮层，同时 `qingyuan-author-promo.js:85`（该模块已随去品牌化删除）调 `QingyuanUnlocks.recordAdClick()` 启动 5 秒倒计时，是 `lightning/dragon` 的唯一正路。
+判定：**【营销型 → 彻底移除】**。现状：**已删除**（入口 DOM、overlay、二维码图片与脚本全部移除）。
 补丁：删按钮与 `#author-ai-overlay`（基线 L760-783）+ 删 L830 脚本行 + `unlock-ui.js:91-122` 的 `ad` 分支。HTML/CSS：是（`.author-promo-*` 样式）。
 
 #### A7 `index.html:818-823`（基线）私测密码表单
@@ -173,8 +173,8 @@
 #### A12 `qingyuan-unlock-core.js:5-9`（基线）5 个任务 = 10 项功能
 ~~~js
 { id:'inspect', task:'成功邀请 1 名好友', reward:'赏剑', features:['inspect'], kind:'invite', target:1 },
-{ id:'dageng',  task:'关注灰森森森', reward:'大庚剑阵、巨剑术、莲花剑阵', features:['dageng','giant','lotus'], kind:'follow', target:1 },
-{ id:'dragon',  task:'点击「UP主同款游戏点击立即制作！」并等待 5 秒', reward:'辟邪神雷、神雷化形', features:['lightning','dragon'], kind:'ad', target:5 },
+{ id:'dageng',  task:'关注原作者', reward:'大庚剑阵、巨剑术、莲花剑阵', features:['dageng','giant','lotus'], kind:'follow', target:1 },
+{ id:'dragon',  task:'点击「作者同款游戏点击立即制作！」并等待 5 秒', reward:'辟邪神雷、神雷化形', features:['lightning','dragon'], kind:'ad', target:5 },
 { id:'qi',      task:'给 BV1d44q6YEGK 视频一键三连', reward:'流云剑气、剑影分光', features:['qi','split'], kind:'featuredTriple', bvid:'BV1d44q6YEGK', target:1 },
 { id:'hand',    task:'给任意 2 条任务视频一键三连', reward:'手势控制、灵力调节', features:['hand','fx'], kind:'triples', target:2 }
 ~~~
@@ -231,7 +231,7 @@ const getSdk = options.getSdk || (() => window.toy);
 if (!candidate || typeof candidate.isSupport !== 'function') return false;
 const names = ['getAuthorRelation','getVideoUserActions','getCloudStorage','setCloudStorage','navigate'];
 ~~~
-语义：无 `window.toy` 或任一能力不支持 → 解锁系统不初始化，面板显示「请在 B站 Toy 中打开并登录」。判定：**【平台依赖 → 移除】**。现状：仍在（`initialize()` 返回 false 后 `refresh` 会打「请在 B站 Toy 中打开…」文案，但入口已隐藏，玩家看不到）。
+语义：无 `window.toy` 或任一能力不支持 → 解锁系统不初始化，面板显示「请在 原版平台 中打开并登录」。判定：**【平台依赖 → 移除】**。现状：仍在（`initialize()` 返回 false 后 `refresh` 会打「请在 原版平台 中打开…」文案，但入口已隐藏，玩家看不到）。
 补丁：删 initialize/refresh 的 SDK 分支，直接 `status='全部已解锁'`。无需 HTML/CSS。
 
 #### A20 `qingyuan-unlock-core.js:138-148`（基线）云存档恢复 + localAd 二次解锁
@@ -241,7 +241,7 @@ const stored = await api.getCloudStorage(persisted.map(storageKey));
 for (const id of persisted) if (stored?.[storageKey(id)] === '1') {unlocked.add(id);synced.add(id);}
 … if (localAd) taskFor('dragon').features.forEach(id=>unlocked.add(id));
 ~~~
-语义：解锁状态只从 B站云存储恢复；`sessionOnly` 的雷龙要靠本次广告重解。判定：**【平台依赖 + 会话级】**。现状：仍在（死代码）。
+语义：解锁状态只从 原平台云存储恢复；`sessionOnly` 的雷龙要靠本次广告重解。判定：**【平台依赖 + 会话级】**。现状：仍在（死代码）。
 补丁：改为 `localStorage.getItem('qy_unlocked_v1')`，或全解锁后整段删。无需 HTML/CSS。
 
 #### A21 `qingyuan-unlock-core.js:156`（基线）刷新 30 秒节流
@@ -252,7 +252,7 @@ if (!force && lastChecked && Date.now() - lastChecked < 30000) return snapshot()
 
 #### A22 `qingyuan-unlock-core.js:233-241`（基线）解锁必须写云存储
 ~~~js
-if (!caps.setCloudStorage || !api) { status='请在 B站 Toy 中登录后保存解锁进度。'; … return false; }
+if (!caps.setCloudStorage || !api) { status='请在 原版平台 中登录后保存解锁进度。'; … return false; }
 … await api.setCloudStorage(Object.fromEntries(item.features.map(feature=>[storageKey(feature),'1'])));
 ~~~
 语义：没登录/SDK 就不能保存解锁 = 任务白做。判定：**【平台依赖 → 移除】**。现状：仍在（死代码）。
@@ -298,11 +298,11 @@ privateLock() { if (!privateUnlocked) return false; privateUnlocked = false;
 语义：密码全开 + 页面关闭即回收（配合 A7）。判定：**【解锁型 → 移除】**。现状：`privateLock` **已改为 `return false`**（常驻解锁）。
 补丁：删两个 API；`window.QingyuanUnlocks` 保留签名（app.js 只在 activate 时用，见 A44）。无需 HTML/CSS。
 
-#### A27 `qingyuan-unlock-core.js:294-299`（基线）`navigate` 依赖 B站
+#### A27 `qingyuan-unlock-core.js:294-299`（基线）`navigate` 依赖 原平台
 ~~~js
-async function navigate(kind, bvid) { … return Promise.reject(new Error('请在 B站 Toy 中完成此操作。')); }
+async function navigate(kind, bvid) { … return Promise.reject(new Error('请在 原版平台 中完成此操作。')); }
 ~~~
-语义：「去完成」按钮跳 B站（关注/视频页）的唯一通道；本地打开必失败。判定：**【营销型 → 移除】**。现状：仍在。补丁：删 `unlock-ui.js:91-122` 的 goTask 分支。无需 HTML/CSS。
+语义：「去完成」按钮跳 原平台（关注/视频页）的唯一通道；本地打开必失败。判定：**【营销型 → 移除】**。现状：仍在。补丁：删 `unlock-ui.js:91-122` 的 goTask 分支。无需 HTML/CSS。
 
 #### A28 `qingyuan-unlock-ui.js:9`（基线）广告可见性判定
 ~~~js
@@ -558,19 +558,19 @@ window.addEventListener('pagehide',()=>stopHandTracking());
 语义：离开即断摄像头。判定：**【平台约束 → 保留】**。现状：仍在。补丁：无。
 
 #### C6 `qingyuan-toy-bridge.js:214-220`（基线）容器 suspend/resume 与 stopAllMedia
-语义：嵌入 B站容器时切后台停所有媒体流（`visibilitychange hidden → stopAllMedia`、`pagehide → suspend`、`pageshow → resume`）。判定：**【平台约束 → 保留】**（STANDALONE 下不走）。现状：仍在。补丁：无。
+语义：嵌入 原平台容器时切后台停所有媒体流（`visibilitychange hidden → stopAllMedia`、`pagehide → suspend`、`pageshow → resume`）。判定：**【平台约束 → 保留】**（STANDALONE 下不走）。现状：仍在。补丁：无。
 
-### D. B站 SDK 依赖与无 SDK 时的降级/卡点
+### D. 原平台 SDK 依赖与无 SDK 时的降级/卡点
 
 #### D1 `qingyuan-toy-bridge.js:10-16`（基线）平台页判定
 ~~~js
-const toyRoute = /(^|\.)bilibili\.com$/i.test(location.hostname) && /^\/toy(?:\/|$)/.test(location.pathname);
+const toyRoute = /(^|\.)原平台\.com$/i.test(location.hostname) && /^\/toy(?:\/|$)/.test(location.pathname);
 function isPlatformPage() {
   const embedded = window.self !== window.top;
   return toyRoute || embedded || /BiliApp|BiliHarmony/i.test(navigator.userAgent) || Boolean(window.__TOY_META__?.toy_id);
 }
 ~~~
-语义：决定摄像头走 SDK 还是浏览器、容器能力是否启用。**若在 B站 App/内嵌里打开且 SDK 挂了，会走 SDK 分支然后 reject，而不是回退浏览器。**
+语义：决定摄像头走 SDK 还是浏览器、容器能力是否启用。**若在 原平台 App/内嵌里打开且 SDK 挂了，会走 SDK 分支然后 reject，而不是回退浏览器。**
 判定：**【平台依赖 → 改强制浏览器】**。现状：**已加** `const STANDALONE=true; if(STANDALONE)return false;`（现行 L12/L14）→ 永远走 `getUserMedia`。
 补丁：无（已做）；建议把 STANDALONE 做成可配置（`?platform=1` 时才走 SDK）。无需 HTML/CSS。
 
@@ -599,7 +599,7 @@ get canControlContainer() { return Boolean(isPlatformPage() && sdk && capabiliti
 #### D5 `qingyuan-invitation.js:37-49` 等 SDK 最多 7 秒
 ~~~js
 if (window.toy) return Promise.resolve(window.toy);
-return new Promise((resolve, reject) => { const script = byId('bilibili-toy-sdk'); … timer = setTimeout(failed, 7000); });
+return new Promise((resolve, reject) => { const script = byId('platform-toy-sdk'); … timer = setTimeout(failed, 7000); });
 ~~~
 语义：无 SDK 时邀请卡功能等 7 秒后失败。判定：**【营销型 → 移除】**。现状：仍在（脚本仍被加载，但入口已隐藏；SDK script 已删 → `script` 为 null，7 秒后 reject）。
 补丁：删 `qingyuan-invitation.js` 及 HTML 引用 + 删 `#invite-home-open`。无需 HTML/CSS（删 DOM 后）。
@@ -608,13 +608,13 @@ return new Promise((resolve, reject) => { const script = byId('bilibili-toy-sdk'
 ~~~js
 const names = ['getQrCode','saveImageToAlbum','sharePicture','share'];
 … const qr = await api.getQrCode({ path, size: 384 });
-… catch → 提示「请在已发布的 B站 Toy 页面中打开后生成」「邀请卡暂时无法生成…」
+… catch → 提示「请在已发布的 原版平台 页面中打开后生成」「邀请卡暂时无法生成…」
 ~~~
 语义：本地版永远走失败提示。判定：**【营销型 → 移除】**。现状：仍在。补丁：删文件（同 D5）。
 
-#### D7 `qingyuan-invitation.js:171-172` 二维码 URL 必须 bilibili.com/toy/
+#### D7 `qingyuan-invitation.js:171-172` 二维码 URL 必须 原站域名/toy/
 ~~~js
-if (!/^https:/.test(url) || !/(^|\.)bilibili\.com$/.test(new URL(url).hostname) || !/^\/toy\/[^/]+/.test(new URL(url).pathname)) throw …
+if (!/^https:/.test(url) || !/(^|\.)原平台\.com$/.test(new URL(url).hostname) || !/^\/toy\/[^/]+/.test(new URL(url).pathname)) throw …
 ~~~
 语义：只认自家域名，本地复刻无法通过。判定：**【营销型 → 移除】**。现状：仍在。补丁：删。
 
@@ -707,7 +707,7 @@ handRecovering=true;forceHandCPU=true;try{handLandmarker?.close();}catch(_){}han
 
 #### E11 `app.js:585-628` 每帧合成作者版权暗水印
 ~~~js
-const copyrightOwner = 'B站：灰森森森';
+const copyrightOwner = '原平台：原作者';
 …
 // opacity .008，每帧把 512×512 水印 canvas 合成进画面
 ~~~
@@ -1010,8 +1010,8 @@ const HAND_ASSET_INTEGRITY=Object.freeze({
 ### 3.1 已由并行实现者应用（本次审计确认）
 | 文件:行号 | old | new | 评价 |
 |---|---|---|---|
-| `index.html:224` | `window.location.replace(…bilibili…)` | 注释掉整段 | ✅ 正确，建议连注释一起删 |
-| `index.html:538` | `<script id="bilibili-toy-sdk" …>` | 注释「不加载 SDK」 | ✅ 正确 |
+| `index.html:224` | `window.location.replace(…原平台…)` | 注释掉整段 | ✅ 正确，建议连注释一起删 |
+| `index.html:538` | `<script id="platform-toy-sdk" …>` | 注释「不加载 SDK」 | ✅ 正确 |
 | `index.html:613,645,646,647` | 默认可见 | `style="display:none"` | ⚠️ 治标：DOM 仍占位、脚本仍加载、`unlock-ui` 仍写文案，建议直接删 |
 | `index.html:815` | 任务解锁说明 | 「完整解锁版」说明 | ✅ 正确 |
 | `index.html:603` | 「雷电已关闭 · 完成任务后可开启」 | 「雷电已关闭 · 可随时开启」 | ✅ 正确 |
@@ -1057,7 +1057,7 @@ const HAND_ASSET_INTEGRITY=Object.freeze({
 7. **回归验证命令**：
    - `grep -n "unlocks\.\(has\|require\)" qingyuan/assets/js/app.js` → 应为 0 或仅剩玩法级联（B 类）；
    - `grep -rn "is-feature-locked\|data-unlock-feature" qingyuan/assets/css qingyuan/assets/js` → 应只剩待删项；
-   - `grep -n "window.self===window.top\|bilibili-toy-sdk\|expectedPassword" qingyuan/index.html qingyuan/assets/js/*.js` → 应为 0；
+   - `grep -n "window.self===window.top\|platform-toy-sdk\|expectedPassword" qingyuan/index.html qingyuan/assets/js/*.js` → 应为 0；
    - 打开 `http://127.0.0.1:8123/` 无跳转、F12 无红色报错、底部六个招式直接可点、点「开启手势控制」直接弹摄像头授权。
 
 ---

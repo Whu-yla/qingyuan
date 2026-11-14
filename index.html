@@ -5,226 +5,10 @@
        手机操作修订：摄像头预览与识别同步转屏，双指捏合缩放视角与赏剑模型。
        取景修订：先镜像再补偿页面转向，预览等比裁切铺满，骨架与操控共用裁切坐标。 -->
   <!-- 剑流掠空音效：使用用户上传的「10月23日 (4)(6).wav」，原采样率无损内嵌；随飞行速度触发，收剑时渐弱。青元剑盾与莲花剑阵施法使用「10月23日 (4)(5).wav」；大庚剑阵展开使用「10月23日 (4)(7).wav」。音效默认关闭；仅大庚剑阵与青元剑盾持续播放剑流与碰撞。其余招式素材署名见内嵌音效包 credits。 -->
-  <head><script>(function(){try{
-var W=window;if(W.__TOY_PERF__){return;}
-var P=W.performance;if(!P||!P.getEntriesByType){return;}
-var M={fw:[],sent:false};W.__TOY_PERF__=M;
-M.pnow=function(){try{return P.now?P.now():(Date.now()-M.t0);}catch(e){return 0;}};
-M.head=Math.round(P.now?P.now():0);
-M.t0=Math.round((P.timeOrigin!==undefined&&P.timeOrigin!==null)?P.timeOrigin:
- ((P.timing&&P.timing.navigationStart)||Date.now()));
-M.sid=(W.crypto&&W.crypto.randomUUID)?W.crypto.randomUUID():
- (Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,10));
-M.fcp=undefined;
-M.readFCP=function(){try{
- if(M.fcp!==undefined){return M.fcp;}
- var es=P.getEntriesByType("paint")||[];
- for(var i=0;i<es.length;i++){
-  if(es[i].name==="first-contentful-paint"){M.fcp=Math.round(es[i].startTime);return M.fcp;}}
-}catch(e){}
-return M.fcp;};
-try{var po=new W.PerformanceObserver(function(l){try{
- var es=l.getEntries();for(var i=0;i<es.length;i++){
-  if(es[i].name==="first-contentful-paint"&&M.fcp===undefined){M.fcp=Math.round(es[i].startTime);
-   try{if(M.onFCP){M.onFCP();}}catch(e){}}}
-}catch(e){}});
-try{po.observe({type:"paint",buffered:true});}catch(e){po.observe({entryTypes:["paint"]});}
-}catch(e){}
-M.probe=function(){try{
- var hit=[];var d=document;
- var add=function(k){if(hit.indexOf(k)<0){hit.push(k);}};
- if(W.unityInstance||W.UnityLoader||W.createUnityInstance){add("unity");}
- if(W.vm||W.Scratch||W.ScratchVM){add("scratch");}
- if(W.cc||W.cocos){add("cocos");}
- if(W.Godot){add("godot");}
- if(W.PIXI){add("pixi");}
- if(W.Phaser){add("phaser");}
- if(W.THREE){add("three");}
- if(W.BABYLON){add("babylon");}
- if(W.WebAssembly&&W.Module&&(W.Module.asm||W.Module.wasmBinary||W._malloc)){add("wasm");}
- if(W.Vue||d.querySelector&&d.querySelector("[data-v-app]")){add("vue");}
- if(W.React||W.ReactDOM){add("react");}
- for(var i=0;i<hit.length;i++){if(M.fw.indexOf(hit[i])<0){M.fw.push(hit[i]);}}
-}catch(e){}};
-M.kind=function(){try{
- var cv=document.getElementsByTagName?document.getElementsByTagName("canvas"):[];
- var engine=["unity","scratch","cocos","godot","pixi","phaser","three","babylon"];
- var hasEngine=false;
- for(var i=0;i<engine.length;i++){if(M.fw.indexOf(engine[i])>=0){hasEngine=true;break;}}
- if(cv&&cv.length>0){return hasEngine?"canvas-engine":"canvas";}
- return hasEngine?"dom-engine":"dom";
-}catch(e){return "unknown";}};
-M.collect=function(withKind){try{
- var nav=(P.getEntriesByType("navigation")||[])[0]||{};
- var o={toy_id:M.toyID,render_mode:M.renderMode,layer:M.layer,
-  session_id:M.sid,time_origin:M.t0};
- var put=function(k,v){try{var x=Math.round(v||0);if(x>0){o[k]=x;}}catch(e){}};
- put("ttfb",nav.responseStart);put("dcl",nav.domContentLoadedEventEnd);
- put("load",nav.loadEventEnd);put("doc_bytes",nav.decodedBodySize);
- put("head_ms",M.head);put("transfer_bytes",nav.transferSize);
- put("encoded_bytes",nav.encodedBodySize);
- if(withKind){M.probe();o.kind=M.kind();o.fw=M.fw.join(",");}
- var fcp=M.readFCP();
- if(fcp!==undefined){o.fcp=fcp;}
- if(M.fcpEst!==undefined){o.fcp_est=M.fcpEst;}
- if(M.selfArmed){put("ff_self",M.ffSelf);o.ff_self_src=M.ffSrc||(M.selfDone?"none":"pending");}
- return o;
-}catch(e){return null;}};
-}catch(e){}})();(function(){try{
-var W=window;var M=W.__TOY_PERF__;if(!M){return;}
-var P=W.performance;if(!P){return;}
-M.fcpEst=undefined;
-M.armEst=function(){try{
- if(M.estArmed){return;}M.estArmed=true;
- if(!W.MutationObserver){return;}
- var D=document;
- var SKIP={SCRIPT:1,STYLE:1,LINK:1,META:1,HEAD:1,TITLE:1,NOSCRIPT:1,TEMPLATE:1};
- var INK={IMG:1,SVG:1,VIDEO:1,INPUT:1,BUTTON:1,TEXTAREA:1,SELECT:1};
- var vis=function(n){try{var s=W.getComputedStyle(n);
-  return !s||(s.display!=="none"&&s.visibility!=="hidden"&&s.opacity!=="0");
- }catch(e){return true;}};
- var scan=function(n,dep){try{
-  if(dep>14){return false;}
-  if(n.nodeType===3){return /\S/.test(n.nodeValue||"");}
-  if(n.nodeType!==1){return false;}
-  if(SKIP[n.tagName]){return false;}
-  if(!vis(n)){return false;}
-  if(INK[n.tagName]){return true;}
-  try{var s=W.getComputedStyle(n);
-   if(s&&s.backgroundImage&&s.backgroundImage!=="none"){return true;}}catch(e){}
-  var c=n.childNodes||[];
-  for(var i=0;i<c.length;i++){if(scan(c[i],dep+1)){return true;}}
-  return false;
- }catch(e){return false;}};
- var anc=function(n){try{var p=n.parentNode;
-  while(p&&p.nodeType===1){if(SKIP[p.tagName]||!vis(p)){return false;}p=p.parentNode;}
-  return true;
- }catch(e){return true;}};
- var ink=function(n){try{
-  if(!n||!D.body){return false;}
-  if(n!==D.body&&(!D.body.contains||!D.body.contains(n))){return false;}
-  if(!anc(n)){return false;}
-  return scan(n,0);
- }catch(e){return false;}};
- var now=function(){try{return Math.round(P.now?P.now():(Date.now()-M.t0));}catch(e){return 0;}};
- var mark=function(){try{
-  if(M.fcpEst!==undefined){return;}
-  var set=function(){try{if(M.fcpEst===undefined){M.fcpEst=now();}}catch(e){}};
-  if(W.requestAnimationFrame){W.requestAnimationFrame(function(){try{setTimeout(set,0);}catch(e){set();}});}
-  else{setTimeout(set,16);}
- }catch(e){}};
- var both=function(){try{mark();if(M.selfMark){M.selfMark();}}catch(e){}};
- var mo=new W.MutationObserver(function(rs){try{
-  for(var i=0;i<rs.length;i++){
-   var a=rs[i].addedNodes||[];
-   for(var j=0;j<a.length;j++){if(ink(a[j])){both();mo.disconnect();return;}}
-   if(rs[i].type==="characterData"&&ink(rs[i].target)){both();mo.disconnect();return;}}
- }catch(e){}});
- mo.observe(D,{childList:true,subtree:true,characterData:true});
-}catch(e){}};
-}catch(e){}})();(function(){try{
-var W=window;var M=W.__TOY_PERF__;if(!M){return;}
-var P=W.performance;if(!P){return;}
-M.ffSelf=undefined;M.ffSrc=undefined;M.cvs=[];
-var hit=function(src){try{
- if(M.ffSelf!==undefined){return;}
- M.ffSelf=Math.round(M.pnow());M.ffSrc=src;M.unhookCtx();
- try{if(M.onSelf){M.onSelf();}}catch(e){}
-}catch(e){}};
-M.unhookCtx=function(){try{
- var H=W.HTMLCanvasElement;
- if(M.gcOrig&&H&&H.prototype&&H.prototype.getContext===M.gcWrap){H.prototype.getContext=M.gcOrig;}
- M.gcOrig=null;M.gcWrap=null;M.cvs=[];
-}catch(e){}};
-M.selfMark=function(){try{
- if(M.ffSelf!==undefined||!W.requestAnimationFrame){return;}
- W.requestAnimationFrame(function(){try{
-  W.requestAnimationFrame(function(){try{hit("raf2");}catch(e){}});
- }catch(e){}});
-}catch(e){}};
-M.armSelf=function(){try{
- if(M.selfArmed){return;}M.selfArmed=true;
- var H=W.HTMLCanvasElement;
- if(!H||!H.prototype||typeof H.prototype.getContext!=="function"){return;}
- var orig=H.prototype.getContext;
- M.gcOrig=orig;
- M.gcWrap=function(t){
-  var r=orig.apply(this,arguments);
-  try{if(r&&M.cvs.length<8){
-   var dup=false;
-   for(var i=0;i<M.cvs.length;i++){if(M.cvs[i].c===this){dup=true;break;}}
-   if(!dup){M.cvs.push({c:this,t:(""+t).toLowerCase(),x:r,bad:false});}}}catch(e){}
-  return r;};
- H.prototype.getContext=M.gcWrap;
-}catch(e){}};
-M.probeCanvas=function(round){try{
- if(M.ffSelf!==undefined){return;}
- var D=document;var gl=false;var tainted=false;
- for(var i=0;i<M.cvs.length;i++){
-  var q=M.cvs[i];var cv=q.c;var x=q.x;
-  if(q.t.indexOf("webgl")>=0||q.t.indexOf("webgpu")>=0){gl=true;continue;}
-  if(q.bad||q.t!=="2d"||!x||!x.getImageData||!cv){continue;}
-  if(D.body&&D.body.contains&&!D.body.contains(cv)){continue;}
-  if(!cv.clientWidth||!cv.clientHeight||!cv.width||!cv.height){continue;}
-  var w=cv.width,h=cv.height;
-  var pts=[[w>>1,h>>1],[0,0],[w-1,h-1],[w>>2,h>>2]];
-  var p=pts[(round||0)%pts.length];
-  try{
-   var d=x.getImageData(p[0],p[1],1,1).data;
-   if(d[3]!==0||d[0]!==0||d[1]!==0||d[2]!==0){hit("pixel");return;}
-  }catch(er){q.bad=true;if(er&&er.name==="SecurityError"){tainted=true;}}
- }
- if(M.ffSrc===undefined){if(gl){M.ffSrc="gl-blind";}else if(tainted){M.ffSrc="tainted";}}
-}catch(e){}};
-}catch(e){}})();(function(){try{
-var W=window;var M=W.__TOY_PERF__;if(!M){return;}
-var NS="toy-shell-ability";
-M.toyID=49768046791680;M.renderMode=2;
-M.layer="content";
-M.armEst();M.armSelf();
-try{var pn=0;var pt=M.pnow();var pdone=function(){try{clearInterval(pk);}catch(e){}
- try{if(M.unhookCtx){M.unhookCtx();}}catch(e){}
- M.selfDone=true;try{if(M.onSelf){M.onSelf();}}catch(e){}};
-var pk=setInterval(function(){try{
- M.probeCanvas(pn);
- if(M.ffSelf!==undefined||++pn>=12||
-  (M.pnow()-pt)>=3600){pdone();}
-}catch(e){pdone();}},300);}catch(e){}
-M.seq=0;
-var flush=function(rs,up){try{
- if(up==="self"){if(M.sent3){return;}M.sent3=true;}
- else if(up){if(M.sent2){return;}M.sent2=true;}
- else{if(M.sent){return;}M.sent=true;}
- var o=M.collect(true);if(!o){return;}
- o.flush_reason=up?(up==="self"?"self":"up"):rs;o.seq=++M.seq;o.ns=NS;o.type="perf";
- M.pendingOut=(o.ff_self_src==="pending");
- if(W.parent&&W.parent!==W){W.parent.postMessage(o,"*");}
-}catch(e){}};
-try{var n=0;var tk=setInterval(function(){try{M.probe();if(++n>8||M.done){clearInterval(tk);}}catch(e){}},400);}catch(e){}
-var arm=function(){try{
- var waited=0;
- var stop=function(t){try{M.done=true;clearInterval(t);}catch(e){}};
- var tick=setInterval(function(){try{
-  waited+=300;
-  if(M.readFCP()!==undefined){stop(tick);flush("fcp",M.sent);return;}
-  if(M.fcpEst!==undefined){flush("est",false);}
-  if(waited>=5000){stop(tick);flush("bound",false);}
- }catch(e){stop(tick);flush("err",false);}},300);
- M.onFCP=function(){try{
-  if(!M.sent||M.sent2){return;}
-  stop(tick);flush("fcp",true);
- }catch(e){}};
- M.onSelf=function(){try{
-  if(!M.sent||M.sent3||!M.pendingOut){return;}
-  flush("self","self");
- }catch(e){}};
-}catch(e){flush("err",false);}};
-if(document.readyState==="complete"){arm();}
-else{W.addEventListener("load",arm,false);}
-}catch(e){}})();</script><!-- 本地复刻：移除“非 iframe 环境就跳回 B站原页”的防盗链跳转。 -->
+  <head><!-- 本地复刻：移除非 iframe 环境自动跳回原站的防盗链逻辑。 -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>青元剑诀 · 月照青元 · B站 Toy</title>
+    <title>青元剑诀 · 月照青元</title>
     <style>
       html.is-booting,html.is-booting body{margin:0;background:#050d12;color:#f5ecd7}
       html.is-booting #app-stage{visibility:hidden;pointer-events:none}
@@ -260,14 +44,7 @@ else{W.addEventListener("load",arm,false);}
       @media(prefers-reduced-motion:reduce){.qy-loading-orbit:before{animation:none}#qy-loading-progress::-webkit-progress-value{transition:none}}
     </style>
     <script defer src="./assets/js/qingyuan-loading.js?v=loading-1"></script>
-    <!-- 版权标记修订：新增四角淡色明水印与随 3D 画面输出的低透明度暗水印。 -->
-    <meta name="author" content="B站：灰森森森" />
-    <meta name="copyright" content="B站：灰森森森" />
-    <!-- 任务解锁修订：五项任务按组发放奖励；开关默认关闭；互动由 Toy SDK 核验，邀请需真实邀请回执。 -->
-    <!-- 邀请卡修订：Toy getQrCode 生成真实二维码，合成 PNG，支持保存相册、图片分享与复制；回执核验独立保留。 -->
-    <!-- 作者推广修订：首页状态卡新增独立入口、内嵌二维码卡片与网址复制；原明暗水印保留。 -->
-    <meta name="description" content="青元剑诀：键鼠、触控与摄像头手势御剑。B站：灰森森森。" />
-    <!-- Toy 适配修订：SDK 摄像头授权与释放、容器方向/尺寸/安全区、后台资源回收。 -->
+    <meta name="description" content="青元剑诀：键鼠、触控与摄像头手势御剑的 3D 御剑模拟器。" />
     <link
       rel="icon"
       type="image/svg+xml"
@@ -530,12 +307,12 @@ SOFTWARE.</script>
     
 
     <link id="qingyuan-game-style" rel="preload" as="style" href="./assets/css/style.css?v=camera-preview-1" />
-    <!-- Explicit resource references allow Toy to rewrite these URLs alongside scripts. -->
+    <!-- Explicit resource references let an embedding host rewrite these URLs alongside scripts. -->
     <link id="hand-model-resource" rel="preload" as="fetch" href="./assets/hand/hand_landmarker.bin" crossorigin="anonymous" media="not all" />
     <link id="hand-model-binary-resource" rel="preload" as="fetch" href="./assets/hand/hand_landmarker.bin" crossorigin="anonymous" media="not all" />
     <link id="hand-wasm-simd-resource" rel="preload" as="fetch" href="./assets/hand/vision_wasm_internal.wasm" crossorigin="anonymous" media="not all" />
     <link id="hand-wasm-basic-resource" rel="preload" as="fetch" href="./assets/hand/vision_wasm_nosimd_internal.wasm" crossorigin="anonymous" media="not all" />
-    <!-- 本地复刻：不加载 B站 Toy SDK，摄像头直接走浏览器原生 getUserMedia。 -->
+    <!-- 本地复刻：不加载宿主平台 SDK，摄像头直接走浏览器原生 getUserMedia。 -->
     <script id="qingyuan-toy-bridge" type="text/plain" data-startup="平台适配" src="./assets/js/qingyuan-toy-bridge.js?v=toy-camera-1"></script>
   </head>
   <body>
@@ -549,17 +326,10 @@ SOFTWARE.</script>
         <p id="qy-loading-status" role="status" aria-live="polite">正在准备游戏…</p>
         <p id="qy-loading-hint">首次进入需要加载资源，请稍候。<br>准备完成后将自动进入。</p>
         <button id="qy-loading-retry" type="button" hidden>重新加载</button>
-        <p class="qy-loading-credit">B站 · 灰森森森</p>
         <noscript><p>请启用 JavaScript 后重新打开游戏。</p></noscript>
       </div>
     </section>
     <div id="app-stage" inert aria-busy="true">
-    <div id="qingyuan-copyright-corners" aria-hidden="true">
-      <span class="copyright-top copyright-left">B站：灰森森森</span>
-      <span class="copyright-top copyright-right">B站：灰森森森</span>
-      <span class="copyright-bottom copyright-left">B站：灰森森森</span>
-      <span class="copyright-bottom copyright-right">B站：灰森森森</span>
-    </div>
     <!-- 3D 渲染画布容器 -->
     <div id="canvas-container"></div>
     <div id="look-reticle" class="look-reticle" aria-hidden="true" hidden></div>
@@ -610,7 +380,7 @@ SOFTWARE.</script>
         <div class="ui-manager-heading"><span>界面显示</span><button id="ui-menu-close" type="button" aria-label="关闭界面显示菜单">×</button></div>
         <div class="ui-manager-scroll">
         <div id="ui-window-list"></div>
-        <div class="ui-manager-help"><button id="ui-open-guide" type="button">操作说明 · F1</button><button id="ui-camera-help" type="button">摄像头检测 / 排障</button><button id="unlock-menu-open" type="button" style="display:none">解锁任务 · 更多剑诀</button></div>
+        <div class="ui-manager-help"><button id="ui-open-guide" type="button">操作说明 · F1</button><button id="ui-camera-help" type="button">摄像头检测 / 排障</button></div>
         </div>
         <div class="ui-manager-actions"><button id="ui-hide-all" type="button">全部隐藏</button><button id="ui-show-all" type="button">全部显示</button></div>
       </section>
@@ -641,12 +411,6 @@ SOFTWARE.</script>
       <div class="plaque-actions">
         <button class="gold-btn" id="toggle-control-btn">开启手势控制</button>
         <span style="font-size: 11px; color: rgba(230, 198, 116, 0.65);">WASD 移动 · 空格上升 · Ctrl 下降</span>
-      </div>
-      <button id="unlock-home-open" class="unlock-home-button" style="display:none" type="button" aria-haspopup="dialog" aria-controls="unlock-panel" aria-expanded="false"><span>🔒 解锁任务 · 更多剑诀</span><span id="unlock-home-count">0/5</span></button>
-      <button id="invite-home-open" class="unlock-home-button invite-home-button" style="display:none" type="button" aria-haspopup="dialog" aria-controls="invite-panel" aria-expanded="false"><span>✦ 邀请好友来御剑</span><small>授权生成邀请卡 ↗</small></button>
-      <div class="author-promo-entry" style="display:none">
-        <button id="author-ai-open" class="author-promo-button" type="button" aria-haspopup="dialog" aria-controls="author-ai-card" aria-expanded="false">✦ UP主同款游戏点击立即制作！</button>
-        <p class="author-promo-caption">国内外前沿 AI · 作者推广</p>
       </div>
       </div>
     </div>
@@ -699,89 +463,6 @@ SOFTWARE.</script>
       </div>
     </div>
 
-    <div id="unlock-overlay" class="unlock-overlay" hidden>
-      <section id="unlock-panel" class="unlock-panel" role="dialog" aria-modal="true" aria-labelledby="unlock-title" tabindex="-1">
-        <header class="unlock-header"><div><p class="unlock-eyebrow">完成任务，解锁更多玩法</p><h2 id="unlock-title">剑诀解锁任务</h2></div><button id="unlock-close" class="unlock-close" type="button" aria-label="关闭解锁任务">关闭 ×</button></header>
-        <div class="unlock-summary"><div><small>已完成任务</small><strong id="unlock-summary-count">0 / 5</strong></div><button id="unlock-refresh" class="unlock-refresh" type="button">刷新进度</button></div>
-        <section id="unlock-follow-guide" class="unlock-follow-guide" aria-labelledby="unlock-follow-title" hidden>
-          <div class="unlock-follow-copy">
-            <p class="unlock-follow-location">↑ B站 Toy 游戏顶部</p>
-            <h3 id="unlock-follow-title" tabindex="-1">请点击顶部的<strong>「+ 关注」</strong></h3>
-            <p class="unlock-follow-instruction">关注 UP主 <b>灰森森森</b><br />也可以点作者头像，进入主页关注。</p>
-            <p class="unlock-follow-reward">一次解锁：大庚剑阵 · 巨剑术 · 莲花剑阵</p>
-          </div>
-          <div class="unlock-follow-actions">
-            <button id="unlock-follow-go" class="unlock-follow-primary" type="button">收起提示，去关注 ↑</button>
-            <button id="unlock-follow-check" type="button">我已关注，核验并解锁</button>
-            <p id="unlock-follow-status" role="status" aria-live="polite">关注后，回到此任务点击核验即可解锁。</p>
-            <button id="unlock-follow-back" class="unlock-follow-back" type="button">返回任务列表</button>
-          </div>
-        </section>
-        <div class="unlock-scroll"><div id="unlock-task-list"></div><section id="unlock-videos" class="unlock-videos" hidden><h3>任务视频 · 完成后回来刷新进度</h3><div id="unlock-video-list"></div></section></div>
-        <footer class="unlock-footer"><p id="unlock-status" role="status" aria-live="polite">完成任务后，回来点“刷新进度”。</p><button id="unlock-show-videos" type="button">查看任务视频</button><p class="unlock-note">推广解锁仅本次进入有效。解锁后自行开启功能。</p></footer>
-      </section>
-    </div>
-
-    <div id="invite-overlay" class="invite-overlay" hidden>
-      <section id="invite-panel" class="invite-panel" role="dialog" aria-modal="true" aria-labelledby="invite-title" aria-describedby="invite-status" tabindex="-1">
-        <header class="invite-header">
-          <div><p class="invite-eyebrow">一纸剑帖 · 与好友共赴青元</p><h2 id="invite-title">邀请好友来御剑</h2></div>
-          <button id="invite-close" class="invite-close" type="button" aria-label="关闭邀请卡">×</button>
-        </header>
-        <div class="invite-body">
-          <div id="invite-card-frame" class="invite-card-frame" aria-busy="false">
-            <img id="invite-card-image" width="900" height="1200" alt="青元剑诀邀请卡，包含进入当前 Toy 的二维码" hidden />
-            <div id="invite-placeholder" class="invite-placeholder">
-              <span class="invite-placeholder-mark" aria-hidden="true">剑</span><strong>青元剑诀</strong>
-              <p id="invite-placeholder-text">正在准备邀请卡…</p>
-            </div>
-          </div>
-          <div class="invite-card-tools">
-            <button id="invite-personalize" class="invite-text-button" type="button" disabled>使用我的昵称头像</button>
-            <button id="invite-retry" class="invite-text-button" type="button">重新生成</button>
-          </div>
-        </div>
-        <footer class="invite-footer">
-          <p id="invite-status" role="status" aria-live="polite">正在生成邀请卡，请稍候。</p>
-          <div class="invite-actions">
-            <a id="invite-save" class="invite-action invite-save" aria-disabled="true" download="青元剑诀-邀请卡.png">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v4h16v-4" /></svg><span>保存邀请卡</span>
-            </a>
-            <button id="invite-share" class="invite-action invite-share" type="button" disabled>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="3" width="13" height="14" rx="2" /><path d="M16 17v4H3V7h5" /></svg><span>复制并分享</span>
-            </button>
-          </div>
-          <p class="invite-hint">也可以长按上方图片保存，再发送给好友。</p>
-          <p class="invite-privacy">点击邀请将申请昵称头像授权，用于本次邀请卡；取消也可生成普通邀请卡。<br />赏剑解锁以实际邀请成功回执为准。</p>
-        </footer>
-      </section>
-    </div>
-
-    <div id="author-ai-overlay" class="author-promo-overlay" hidden>
-      <section id="author-ai-card" class="author-promo-card" role="dialog" aria-modal="true" aria-labelledby="author-ai-title" aria-describedby="author-ai-intro" tabindex="-1">
-        <button id="author-ai-close" class="author-promo-close" type="button" aria-label="关闭 AI 工具箱">关闭 ×</button>
-        <div class="author-promo-layout">
-          <header class="author-promo-header">
-            <p class="author-promo-eyebrow">AI 工具箱 · 作者推广</p>
-            <h2 id="author-ai-title" class="author-promo-title">你的 AI 工具箱，一个入口就够</h2>
-            <p id="author-ai-intro" class="author-promo-intro">国内外前沿 AI，一站使用。</p>
-            <p id="author-ai-countdown" class="author-promo-countdown" role="status" aria-live="polite">点击推广入口后等待 5 秒，解锁辟邪神雷与神雷化形，本次进入有效。</p>
-          </header>
-          <div class="author-promo-qr">
-            <div class="author-promo-qr-frame">
-              <img id="author-ai-qr" src="./assets/images/author-qr.png" width="400" height="400" alt="微信扫码进入作者的 AI 工具站" decoding="async" draggable="false" />
-            </div>
-            <p class="author-promo-qr-hint">微信扫一扫，进入站点</p>
-          </div>
-          <footer class="author-promo-footer">
-            <a id="author-ai-url" class="author-promo-url" href="https://aish.chatopens.vip" target="_blank" rel="noopener noreferrer">https://aish.chatopens.vip</a>
-            <button id="author-ai-copy" class="author-promo-copy" type="button">复制网址</button>
-            <p id="author-ai-copy-status" class="author-promo-copy-status" role="status" aria-live="polite"></p>
-          </footer>
-        </div>
-      </section>
-    </div>
-
     <div id="game-guide-overlay" class="game-guide-overlay" hidden>
       <section id="game-guide-panel" class="game-guide-panel" role="dialog" aria-modal="true" aria-labelledby="game-guide-title" tabindex="-1">
         <header class="game-guide-header"><div><p>青元剑诀 · 随身剑谱</p><h2 id="game-guide-title">完整操作说明</h2></div><button id="game-guide-close" type="button" aria-label="关闭操作说明">关闭 ×</button></header>
@@ -801,7 +482,7 @@ SOFTWARE.</script>
             <tr><td>Q ／ 招式栏“莲花剑阵”按钮</td><td>开启或关闭莲花剑阵；点击空白画面仅操控御剑。</td></tr><tr><td>R</td><td>开启或关闭青元剑盾。</td></tr><tr><td>E</td><td>开启或关闭大庚剑阵，展开五阵与金色切割剑丝。</td></tr><tr><td>T</td><td>开启或关闭巨剑术。</td></tr><tr><td>F</td><td>开启或关闭神雷化形；需先开启“辟邪神雷”。</td></tr>
             <tr><td>G</td><td>开启或关闭剑影分光；关闭后按“关后”开关选择保留72口主剑，或只保留一把飞剑。</td></tr><tr><td>1 / 2 / 3 / 4</td><td>分别切换剑影分光、辟邪神雷、流云剑气，以及“关后”保留72口主剑。</td></tr><tr><td>H</td><td>进入或退出赏剑模式。</td></tr><tr><td>鼠标滚轮</td><td>向前拉近、向后拉远；赏剑模式中用于放大、缩小模型。</td></tr><tr><td>金龙形态按住右键</td><td>持续吐雷，移动鼠标瞄准，松开结束。</td></tr><tr><td>Esc</td><td>优先关闭说明或界面菜单；普通键鼠御剑时返回自由御剑。</td></tr><tr><td>F1</td><td>打开操作说明。</td></tr>
           </tbody></table></div><p>切换新招式会替换当前招式。点击“剑影分光”招式按钮可返回普通御剑；G 控制的是分光显示开关，两者用途不同。</p></section>
-          <section id="guide-phone"><h3>三、手机操作</h3><ul><li><strong>移动：</strong>单指在空白画面滑动；点击界面按钮、滑条时不会同时触发剑招。</li><li><strong>缩放：</strong>在空白画面双指张开拉近、双指合拢拉远；赏剑模式也可用双指缩放。捏合结束后抬起双指，再用单指继续操控。</li><li><strong>切招：</strong>点击底部招式按钮，再点一次关闭。</li><li><strong>横竖屏：</strong>使用“界面”旁的切屏按钮；B站 App 支持时请求容器横屏与沉浸显示，并以容器实际状态更新画面；其余环境使用页面方向适配。摄像头画面、手势识别和骨架会一起适配方向，切换不会重置招式和参数。</li><li><strong>吐雷：</strong>进入金龙形态后，按住“灵力调节”里的“按住吐雷”按钮，松开结束。</li><li><strong>观察：</strong>横屏可获得更宽的视野；“视角复位”恢复正前方和默认观察距离。双指张开拉近视角，双指合拢拉远；接入鼠标后也可使用滚轮。</li><li><strong>赏剑：</strong>点击“赏剑”，单指拖动旋转模型，双指捏合放大、缩小；点击“退出赏剑”返回。</li></ul></section>
+          <section id="guide-phone"><h3>三、手机操作</h3><ul><li><strong>移动：</strong>单指在空白画面滑动；点击界面按钮、滑条时不会同时触发剑招。</li><li><strong>缩放：</strong>在空白画面双指张开拉近、双指合拢拉远；赏剑模式也可用双指缩放。捏合结束后抬起双指，再用单指继续操控。</li><li><strong>切招：</strong>点击底部招式按钮，再点一次关闭。</li><li><strong>横竖屏：</strong>使用“界面”旁的切屏按钮；嵌入宿主应用时请求容器横屏与沉浸显示，并以容器实际状态更新画面；其余环境使用页面方向适配。摄像头画面、手势识别和骨架会一起适配方向，切换不会重置招式和参数。</li><li><strong>吐雷：</strong>进入金龙形态后，按住“灵力调节”里的“按住吐雷”按钮，松开结束。</li><li><strong>观察：</strong>横屏可获得更宽的视野；“视角复位”恢复正前方和默认观察距离。双指张开拉近视角，双指合拢拉远；接入鼠标后也可使用滚轮。</li><li><strong>赏剑：</strong>点击“赏剑”，单指拖动旋转模型，双指捏合放大、缩小；点击“退出赏剑”返回。</li></ul></section>
           <section id="guide-gestures"><h3>四、摄像头手势剑诀</h3><p>点击左上角“开启手势控制”进入手势控制，允许摄像头权限。一只完整手掌保持在画面内，光线充足，手形保持片刻。手势模式按识别到的手形持续切招。</p><div class="guide-table-wrap"><table><thead><tr><th>手形</th><th>招式</th></tr></thead><tbody><tr><td>食指、中指伸直成剑指；或收拇指、只伸食指</td><td>普通御剑。</td></tr><tr><td>五指张开</td><td>莲花剑阵。</td></tr><tr><td>握拳</td><td>青元剑盾。</td></tr><tr><td>食指、小指伸直，其余收拢；或 OK 圈并伸直其余三指</td><td>大庚剑阵。</td></tr><tr><td>拇指、食指张开成 L／八字，其余手指收拢</td><td>巨剑术。</td></tr></tbody></table></div><p>要用剑指御龙：先开启“辟邪神雷”，再点“神雷化形”，之后用剑指操控金龙。吐雷仍使用右键或“按住吐雷”按钮。点击“关闭手势控制”可回到键鼠／触控，并关闭摄像头。</p><p>未检测到手掌时，请将手移回镜头内。隐藏摄像头窗口只隐藏预览，手势仍继续运行；切回键鼠／触控或使用下面的“关闭摄像头”才会停止相机。</p></section>
           <section id="guide-effects"><h3>五、灵力与特效调节</h3><div class="guide-table-wrap"><table><thead><tr><th>控件</th><th>用途</th></tr></thead><tbody><tr><td>辟邪神雷开关</td><td>控制雷电。关闭时金龙退回普通御剑；大庚剑阵的金色切割剑丝仍运行。</td></tr><tr><td>雷电数量 0–400%</td><td>同时调节主雷丝、主丝上的分叉数量、外扩幅度和放电强度。数值越高，分叉越密集、雷光越炸裂；0 表示不生成雷电。</td></tr><tr><td>剑光透明度 0–100%</td><td>数值越高，剑光越通透；100% 时剑光本体透明。</td></tr><tr><td>剑身自转 0–120</td><td>调节剑与剑光沿长轴的自转速度，0 可停止。各剑的相位、旋向略有差别。</td></tr><tr><td>流云剑气开关</td><td>控制贴着剑身流动的青色云雾、光丝和微尘，独立于雷电开关。</td></tr><tr><td>视角复位 · C</td><td>恢复正前方与默认观察距离，保留飞行位置。</td></tr></tbody></table></div><p>音效默认关闭，点击“音效：关”开启。“灵力调节”顶部的“招式音量”控制全部音效并记住音量；每次重新打开仍从静音开始。大庚剑阵与青元剑盾展开后持续播放剑流与碰撞声，莲花剑阵只在起手时播放；龙形态没有持续的剑碰撞声。普通剑流的破空声随游走速度变化，金龙吐雷随按住、松开同步起落。进入赏剑、打开说明或切到后台时暂停战斗音效。</p><p>巨剑术的剑气、雷电会随剑体比例变化。关闭剑影分光后，剑光及其附着特效一起隐藏；“关后”开关决定是否继续显示72口主剑。莲花剑阵会先让飞剑完成入场飞行，再显出完整阵盘。</p></section>
           <section id="guide-inspection"><h3>六、赏剑模式</h3><p>按 H 或点“赏剑”进入独立赏析画面，战斗场景暂停。按住左键拖动，或用单指拖动，可从不同角度观察；鼠标滚轮放大、缩小。</p><p>底部可切换“本命青竹剑”和“通透剑光”。自转与流云剑气会呈现当前设置；手动拖动时暂停自动自转。再次按 H 或点“退出赏剑”，回到进入前的招式与位置。</p></section>
@@ -809,83 +490,17 @@ SOFTWARE.</script>
           <section id="guide-camera"><h3>八、摄像头状态与排障</h3>
             <p>按住摄像头框 2 秒，等边框亮起后拖动。可在“灵力调节”中使用“摄像头画面大小”滑条放大预览。</p>
             <div class="camera-diagnostic" aria-live="polite"><h4 id="camera-diagnostic-title">摄像头尚未开启</h4><p id="camera-diagnostic-detail">点击“开启手势”并允许使用摄像头。</p><dl><dt>页面环境</dt><dd id="camera-context-state">检查中</dd><dt>访问权限</dt><dd id="camera-policy-state">检查中</dd><dt>摄像头</dt><dd id="camera-stream-state">未开启</dd><dt>手势组件</dt><dd id="camera-model-state">模型已随游戏打包</dd><dt>最近错误</dt><dd id="camera-error-code">无</dd></dl><div class="camera-guide-actions"><button id="camera-retry-button" type="button">重新开启手势</button><button id="camera-stop-button" type="button">关闭摄像头</button></div><details><summary>查看详细错误</summary><pre id="camera-technical-detail">尚无错误记录</pre></details></div>
-            <ol><li><strong>没有权限弹窗：</strong>请在 B站 内打开已发布的 Toy，点击“开启手势控制”，确认 B站 的摄像头使用授权和系统相机权限。SDK 尚未连接时可检查网络后重新打开；普通浏览器需通过 HTTPS 访问。</li><li><strong>未获得授权：</strong>允许 B站 使用系统相机，并确认 Toy 摄像头使用授权；如果取消了授权，可再次点击“重新开启手势”。普通浏览器请检查网站相机权限。</li><li><strong>相机被占用：</strong>结束视频通话、关闭其他使用相机的应用或标签页，再试一次。</li><li><strong>摄像头有画面但不识别：</strong>完整手掌入镜，避免背光，放慢手形切换；可关闭并重新开启手势。手机默认采用兼容识别模式。</li><li><strong>模型初始化失败：</strong>新版的识别程序、运行组件和模型已打包，不必临时访问外部模型站点。请确保文件下载完整，并换用支持本地识别组件的浏览器。</li><li><strong>返回游戏后相机停止：</strong>切到后台会停止摄像头，返回后请重新开启手势。</li></ol>
-            <p>摄像头画面由 B站 Toy SDK 提供给游戏，在当前页面用于手势识别；游戏代码不录制、不保存或上传摄像头视频。遇到问题时可记录“最近错误”和“详细错误”，便于继续定位。</p><p class="guide-reference">浏览器机制参考：<a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia" target="_blank" rel="noopener noreferrer">MDN 摄像头权限说明</a>。</p>
+            <ol><li><strong>没有权限弹窗：</strong>请点击“开启手势控制”，确认浏览器的摄像头使用授权和系统相机权限。浏览器未弹出授权提示时，可检查地址栏的权限设置后重新打开；摄像头只在 HTTPS 或 http://localhost 环境下可用。</li><li><strong>未获得授权：</strong>允许浏览器使用系统相机；如果取消了授权，可再次点击“重新开启手势”。也可检查地址栏的网站相机权限。</li><li><strong>相机被占用：</strong>结束视频通话、关闭其他使用相机的应用或标签页，再试一次。</li><li><strong>摄像头有画面但不识别：</strong>完整手掌入镜，避免背光，放慢手形切换；可关闭并重新开启手势。手机默认采用兼容识别模式。</li><li><strong>模型初始化失败：</strong>新版的识别程序、运行组件和模型已打包，不必临时访问外部模型站点。请确保文件下载完整，并换用支持本地识别组件的浏览器。</li><li><strong>返回游戏后相机停止：</strong>切到后台会停止摄像头，返回后请重新开启手势。</li></ol>
+            <p>摄像头画面由浏览器直接提供给游戏，在当前页面用于手势识别；游戏代码不录制、不保存或上传摄像头视频。遇到问题时可记录“最近错误”和“详细错误”，便于继续定位。</p><p class="guide-reference">浏览器机制参考：<a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia" target="_blank" rel="noopener noreferrer">MDN 摄像头权限说明</a>。</p>
           </section>
-          <section id="guide-unlocks"><h3>解锁任务与功能开关</h3><p>本页为完整解锁版：赏剑、大庚剑阵、巨剑术、莲花剑阵、辟邪神雷、神雷化形、流云剑气、剑影分光、手势控制与灵力调节全部默认可用，不需要邀请好友、关注作者、给视频三连，也不需要等待推广倒计时。</p><p>原版的“解锁任务 / 邀请好友 / UP主推广”入口已移除，招式直接点底部招式栏即可开关；手势控制点“开启手势控制”后由浏览器直接请求摄像头权限。</p></section>
+          <section id="guide-features"><h3>剑诀与功能开关</h3><p>赏剑、大庚剑阵、巨剑术、莲花剑阵、辟邪神雷、神雷化形、流云剑气、剑影分光、手势控制与灵力调节全部默认可用，无需任务、邀请或等待倒计时。</p><p>招式直接点底部招式栏即可开关；手势控制点“开启手势控制”后由浏览器直接请求摄像头权限。</p></section>
           <p class="guide-end">收起剑谱，随心御剑。点击右上角“关闭”返回游戏。</p>
         </div>
       </section>
     </div>
 
     </div><!-- app-stage -->
-    <script id="qingyuan-author-promo" type="text/plain" data-startup="界面组件" src="./assets/js/qingyuan-author-promo.js?v=five-tasks-1"></script>
-    <script id="qingyuan-unlock-config" type="application/json">
-{
-  "authorName": "灰森森森",
-  "authorSpaceId": "",
-  "videos": [
-    "BV1d44q6YEGK",
-    "BV1VG446PEUr",
-    "BV1nLxQ65EPN",
-    "BV1ZvpE66E4s",
-    "BV1XRaU6rE2e",
-    "BV17Aeb6YEfx",
-    "BV1Tteb6jELa",
-    "BV1jUe76AEag",
-    "BV1XwYt6nEWs",
-    "BV1i7Y46HE4W",
-    "BV1tBYJ6REDF",
-    "BV1gBbK6kEqe",
-    "BV16pti63EzD",
-    "BV1Vw4o6pEdb",
-    "BV12u8q6dEVJ",
-    "BV1EKgj6zEWo",
-    "BV1zsgL6qEGs",
-    "BV1dKMC6iEq9",
-    "BV19TNR69EFp",
-    "BV1zATt68EKF",
-    "BV1unj766EFm",
-    "BV16uRvBvEXJ",
-    "BV1W99yBYEKG",
-    "BV1f4oGBrE6K",
-    "BV157opBbEAt",
-    "BV1UkdVB4EfF",
-    "BV1oqdhB9Ea1",
-    "BV1wqQYBZEDm",
-    "BV1qevHBGEVA",
-    "BV1sg2yB7E1w",
-    "BV1yZSYBxEtR",
-    "BV1aiyuBREEy",
-    "BV1heyjBgEcx",
-    "BV14Nk6B8E6W",
-    "BV1Pe1jBPEM9",
-    "BV1tmHHzjESg",
-    "BV1AoJXz9Ekb",
-    "BV1hDpCzmEJZ",
-    "BV13gp3zREVe",
-    "BV1pGHQzQEMa",
-    "BV14DtSzzEU9",
-    "BV1iZt8zAEV3",
-    "BV1SCtBzyE8K",
-    "BV1QhtFzuEoA",
-    "BV1QTGpzFEaC",
-    "BV16uT1zbEu3",
-    "BV1HB7zzrEMC",
-    "BV1a2jmz5E4F",
-    "BV1BjV8zcEiv",
-    "BV1pvLfztEQe",
-    "BV1KacNenEgz",
-    "BV1Qg4y1Z7fb",
-    "BV1Rr4y1H74Y"
-  ]
-}
-
-    </script>
-    <script id="qingyuan-unlock-core" type="text/plain" data-startup="解锁任务" src="./assets/js/qingyuan-unlock-core.js?v=camera-preview-1"></script>
-    <script id="qingyuan-unlock-ui" type="text/plain" data-startup="解锁界面" src="./assets/js/qingyuan-unlock-ui.js?v=camera-preview-1"></script>
-    <script id="qingyuan-private-unlock" type="text/plain" data-startup="界面组件" src="./assets/js/qingyuan-private-unlock.js?v=mobile-password-2"></script>
-    <script id="qingyuan-invitation" type="text/plain" data-startup="邀请组件" src="./assets/js/qingyuan-invitation.js?v=auto-profile-1"></script>
+    <script id="qingyuan-unlock-core" type="text/plain" data-startup="剑诀模块" src="./assets/js/qingyuan-unlock-core.js?v=camera-preview-1"></script>
     <script id="qingyuan-sfx-bank" type="application/json"></script>
     <script type="text/plain" data-startup="音效资源" src="./assets/data/qingyuan-sfx-bank.js"></script>
     <script id="qingyuan-app" type="text/plain" data-startup="游戏程序" src="./assets/js/app.js?v=camera-preview-1"></script>

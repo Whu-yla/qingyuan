@@ -299,7 +299,7 @@
           breathHeld: false,
           splitEnabled: false,
           retainMainSwordsWhenSplitOff: false, // 关闭分光后保留72把主剑，或仅保留一把本命剑
-          lightningEnabled: false, // 未解锁的开关默认关闭；解锁后也由玩家自行开启
+          lightningEnabled: false, // 默认关闭的开关；开启后由玩家自行控制
           pointerNDC: new THREE.Vector2(0, 0),
           prevPointerNDC: new THREE.Vector2(0, 0),
           targetPosition: new THREE.Vector3(0, 0, 0),
@@ -580,52 +580,8 @@
         scene.environment = createStudioEnvironment();
         container.appendChild(renderer.domElement);
 
-        // 暗水印直接合成进 WebGL 画面；四角 DOM 明水印隐藏后仍有画面署名。
-        // 低透明度重复文字用于辅助溯源，不依赖联网或额外素材。
-        const copyrightOwner = 'B站：灰森森森';
-        const copyrightTile = document.createElement('canvas');
-        copyrightTile.width = 512;
-        copyrightTile.height = 256;
-        const copyrightContext = copyrightTile.getContext('2d');
-        copyrightContext.fillStyle = '#ffffff';
-        copyrightContext.font = '20px "Microsoft YaHei", "PingFang SC", sans-serif';
-        copyrightContext.textAlign = 'center';
-        copyrightContext.textBaseline = 'middle';
-        for (const [x, y] of [[128, 64], [384, 192]]) {
-          copyrightContext.save();
-          copyrightContext.translate(x, y);
-          copyrightContext.rotate(-Math.PI / 7);
-          copyrightContext.fillText(copyrightOwner, 0, 0);
-          copyrightContext.restore();
-        }
-        const copyrightSignatureTexture = new THREE.CanvasTexture(copyrightTile);
-        copyrightSignatureTexture.name = copyrightOwner;
-        copyrightSignatureTexture.wrapS = copyrightSignatureTexture.wrapT = THREE.RepeatWrapping;
-        copyrightSignatureTexture.minFilter = copyrightSignatureTexture.magFilter = THREE.LinearFilter;
-        copyrightSignatureTexture.generateMipmaps = false;
-        const copyrightScene = new THREE.Scene();
-        copyrightScene.name = '青元剑诀 · 版权暗水印';
-        copyrightScene.userData.copyright = copyrightOwner;
-        const copyrightCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 2);
-        const copyrightSignature = new THREE.Mesh(
-          new THREE.PlaneGeometry(2, 2),
-          new THREE.MeshBasicMaterial({
-            map: copyrightSignatureTexture, transparent: true, opacity: .008,
-            depthTest: false, depthWrite: false, toneMapped: false, fog: false
-          })
-        );
-        copyrightSignature.position.z = -1;
-        copyrightSignature.frustumCulled = false;
-        copyrightScene.add(copyrightSignature);
-        let copyrightRepeatKey='';
-        function renderCopyrightWatermark() {
-          const repeatKey=APP_VIEW.width+'x'+APP_VIEW.height;
-          if(repeatKey!==copyrightRepeatKey){
-            copyrightSignatureTexture.repeat.set(APP_VIEW.width / 512, APP_VIEW.height / 256);
-            copyrightRepeatKey=repeatKey;
-          }
-          renderer.render(copyrightScene, copyrightCamera);
-        }
+        // 本地复刻：移除随 3D 画面输出的作者署名暗水印。
+        function renderCopyrightWatermark() {}
         let renderQuality = isMobile ? 'balanced' : 'ultra';
         const qualityBtn = document.createElement('button');
         qualityBtn.className = 'gold-btn';
@@ -4912,8 +4868,8 @@
         function refreshCameraDiagnostic(){
           const put=(id,text)=>{const el=document.getElementById(id);if(el)el.textContent=text;};
           put('camera-diagnostic-title',cameraDiagnostic.title);put('camera-diagnostic-detail',cameraDiagnostic.detail);
-          put('camera-context-state',toyBridge.sdkAvailable?'B站 Toy · 平台摄像头授权':toyBridge.isPlatformPage?'B站 Toy · 等待 SDK 连接':window.isSecureContext===false?'当前页面不是安全页面':'普通浏览器 · 安全访问检查');
-          const allowed=cameraPolicyAllowed();put('camera-policy-state',toyBridge.sdkAvailable?'由 B站 授权弹窗与系统相机权限确认':toyBridge.isPlatformPage?'等待 B站 摄像头授权组件加载':allowed===false?'当前预览未开放摄像头':allowed===true?'当前页面允许申请摄像头':'由浏览器确认访问权限');
+          put('camera-context-state',window.isSecureContext===false?'当前页面不是安全页面':'普通浏览器 · 安全访问检查');
+          const allowed=cameraPolicyAllowed();put('camera-policy-state',allowed===false?'当前页面未开放摄像头':allowed===true?'当前页面允许申请摄像头':'由浏览器确认访问权限');
           put('camera-stream-state',cameraStream?.getVideoTracks?.().some(t=>t.readyState==='live')?'摄像头已开启':'摄像头未开启');
           put('camera-model-state',handLandmarker?'手势识别已就绪 · '+(handDelegate==='CPU'?'兼容模式':'加速模式'):cameraDiagnostic.stage==='model'?'识别组件正在准备':'资源已随包附带 · 支持备用下载');
           put('camera-error-code',cameraDiagnostic.code||'无');put('camera-technical-detail',cameraDiagnostic.technical||'尚无错误记录');
@@ -4941,23 +4897,23 @@
         }
         function explainCameraError(error,stage){
           let code=error.cameraCode||error.name||'UNKNOWN',title='手势识别暂时不可用',detail='可以重试；普通御剑仍可用鼠标或触屏。';
-          if(code==='BusinessDenied'){title='已取消 B站 摄像头授权';detail='如需手势御剑，请点“重新开启手势”并确认 B站 的摄像头使用授权；也可继续触控御剑。';}
-          else if(code==='TOY_CAMERA_UNSUPPORTED'||error.type==='unsupported'){title='当前环境不支持 Toy 摄像头';detail='请更新 B站 App 后重新打开 Toy，或继续使用键鼠和触控御剑。';}
-          else if(code==='TOY_SDK_UNAVAILABLE'){title='B站 连接尚未就绪';detail='请检查网络并重新打开当前 Toy，再点击“开启手势控制”。键鼠和触控仍可使用。';}
+          if(code==='BusinessDenied'){title='已取消摄像头授权';detail='如需手势御剑，请点“重新开启手势”并在浏览器授权提示中确认；也可继续触控御剑。';}
+          else if(code==='TOY_CAMERA_UNSUPPORTED'||error.type==='unsupported'){title='当前环境不支持摄像头';detail='请更新浏览器后重新打开页面，或继续使用键鼠和触控御剑。';}
+          else if(code==='TOY_SDK_UNAVAILABLE'){title='摄像头组件尚未就绪';detail='请重新打开当前页面，再点击“开启手势控制”。键鼠和触控仍可使用。';}
           else if(code==='CAMERA_CANCELLED'){title='摄像头申请已取消';detail='返回游戏后可重新点击“开启手势控制”。';}
           else if(code==='INSECURE_CONTEXT'){title='当前页面不是安全页面';detail='请使用浏览器访问游戏的 HTTPS 网页。普通 HTTP、部分附件预览或无来源页面无法申请摄像头。';}
-          else if(code==='CAMERA_POLICY'){title='当前页面的摄像头访问受限';detail=toyBridge.isPlatformPage?'请检查网络并重新打开 B站 Toy，让平台摄像头授权组件完成加载后重试。':'当前嵌入页面未开放摄像头访问，请从游戏的正式入口打开；网页宿主需要允许摄像头访问。';}
+          else if(code==='CAMERA_POLICY'){title='当前页面的摄像头访问受限';detail='当前嵌入页面未开放摄像头访问，请直接打开游戏页面；网页宿主需要允许摄像头访问。';}
           else if(code==='CAMERA_API'){title='当前浏览器没有提供摄像头入口';detail='请在手机系统设置中允许浏览器使用相机，再用 Safari 或 Chrome 打开游戏的 HTTPS 网页；不要使用只读文件预览。';}
           else if(['NotAllowedError','PermissionDeniedError','SecurityError'].includes(code)&&['camera','video'].includes(stage)){
             if(stage==='video'){title='摄像头视频播放被阻止';detail='请点“重新开启手势”，并在浏览器中允许播放摄像头画面。';}
-            else{title='未获得摄像头授权';detail=toyBridge.sdkAvailable?'请在系统设置中允许 B站 使用相机，并在 B站 的摄像头授权提示中确认，再点“重新开启手势”。':'请在地址栏的网站权限、手机系统的浏览器相机权限中允许访问，再点“重新开启手势”。';}
+            else{title='未获得摄像头授权';detail='请在地址栏的网站权限、手机系统的浏览器相机权限中允许访问，再点“重新开启手势”。';}
           }
           else if(code==='NotFoundError'||code==='DevicesNotFoundError'){title='没有找到可用摄像头';detail='请确认设备有可用相机，或解除相机禁用后重试。';}
           else if(code==='NotReadableError'||code==='TrackStartError'||code==='AbortError'){title='摄像头被占用或暂时无法启动';detail='请关闭正在使用相机的应用、网页或通话，然后重试；必要时重新打开浏览器。';}
           else if(code==='OverconstrainedError'){title='摄像头参数不受支持';detail='已尝试普通视频模式。请换用系统浏览器或确认相机可用后重试。';}
           else if(code==='VIDEO_TIMEOUT'){title='摄像头尚未输出画面';detail='请恢复摄像头窗口、检查相机权限和占用情况，再重新开启手势。';}
           else if(code==='CAMERA_ENDED'){title='摄像头已被系统停止';detail='切回游戏后，点“重新开启手势”重新连接相机。';}
-          else if(code==='LOCAL_ASSET'||stage==='assets'){code='LOCAL_ASSET';title='手势识别资源加载失败';detail=location.protocol==='file:'?'请从 B站 Toy 页面开启手势控制，或使用本地预览服务。':'游戏包和备用地址中的识别资源均未能读取，请检查网络后重试。详细错误中可查看失败网址。';}
+          else if(code==='LOCAL_ASSET'||stage==='assets'){code='LOCAL_ASSET';title='手势识别资源加载失败';detail=location.protocol==='file:'?'请改用本地预览服务（http://localhost）打开页面后再开启手势控制。':'游戏包和备用地址中的识别资源均未能读取，请检查网络后重试。详细错误中可查看失败网址。';}
           else if(stage==='model'||stage==='inference'){code=stage==='model'?'MODEL_INIT':'MODEL_INFERENCE';title='识别组件初始化或运行失败';detail='已启用兼容处理。请重试或更换系统浏览器；若预览限制了识别组件，请使用游戏的 HTTPS 网页。';}
           return{code,title,detail};
         }
@@ -5099,8 +5055,8 @@
             let stage='camera',permissionNotice;
             try{
               cameraDiagnostic.code='';cameraDiagnostic.technical='';
-              setCameraStatus('camera','正在申请摄像头权限',toyBridge.sdkAvailable?'请确认 B站 的摄像头使用授权，并允许系统相机权限。可切回触控取消。':'请在浏览器弹窗中选择允许。可切回触控取消。');
-              permissionNotice=setTimeout(()=>{if(serial===handSessionSerial)setCameraStatus('camera','等待摄像头授权','请检查 B站 或浏览器的摄像头授权弹窗；可点摄像头状态查看排障步骤。');},15000);
+              setCameraStatus('camera','正在申请摄像头权限','请在浏览器弹窗中选择允许。可切回触控取消。');
+              permissionNotice=setTimeout(()=>{if(serial===handSessionSerial)setCameraStatus('camera','等待摄像头授权','请检查浏览器的摄像头授权弹窗；可点摄像头状态查看排障步骤。');},15000);
               const stream=await toyBridge.requestCamera(cameraVideoConstraints());
               clearTimeout(permissionNotice);
               if(serial!==handSessionSerial){void toyBridge.stopMedia(stream);return false;}
@@ -6462,7 +6418,7 @@
 
 
         const gameGuideOverlay=document.getElementById('game-guide-overlay'),gameGuidePanel=document.getElementById('game-guide-panel');
-        function isInteractionOverlayOpen(){return !gameGuideOverlay.hidden||window.QingyuanAuthorPromo.isOpen||window.QingyuanUnlocks?.isOpen===true||window.QingyuanInvitation?.isOpen===true;}
+        function isInteractionOverlayOpen(){return !gameGuideOverlay.hidden||window.QingyuanAuthorPromo?.isOpen===true||window.QingyuanUnlocks?.isOpen===true||window.QingyuanInvitation?.isOpen===true;}
         function openGameGuide(section='guide-start'){
           swordAudio.setPaused(true);STATE.breathHeld=false;
           clearFlightInput();
@@ -6473,7 +6429,7 @@
           if(section==='guide-start')document.getElementById('game-guide-content').scrollTop=0;
           else document.getElementById(section)?.scrollIntoView({block:'start'});
         }
-        function closeGameGuide(){window.QingyuanPrivateUnlock?.close?.();gameGuideOverlay.hidden=true;swordAudio.setPaused(STATE.inspectMode||isInteractionOverlayOpen());uiVisibilityButton.focus();}
+        function closeGameGuide(){gameGuideOverlay.hidden=true;swordAudio.setPaused(STATE.inspectMode||isInteractionOverlayOpen());uiVisibilityButton.focus();}
         function handleGameGuideKey(event){
           if(event.code==='F1'){event.preventDefault();if(!event.repeat)openGameGuide();return true;}
           if(!isInteractionOverlayOpen())return false;
@@ -6498,28 +6454,6 @@
         });
         document.getElementById('camera-stop-button').addEventListener('click',()=>{stopHandTracking();syncModeFromKeys();});
         refreshCameraDiagnostic();
-        window.QingyuanAuthorPromo.setHooks({
-          onOpen(){
-            gameGuideOverlay.hidden=true;
-            swordAudio.setPaused(true);
-            STATE.breathHeld=false;
-            clearFlightInput();
-            releaseLookControl();
-            cancelTouchNavigation();
-            setUiMenuOpen(false);
-          },
-          onClose(){swordAudio.setPaused(STATE.inspectMode||isInteractionOverlayOpen());}
-        });
-
-
-        window.QingyuanInvitation.setHooks({
-          onOpen(){
-            gameGuideOverlay.hidden=true;swordAudio.setPaused(true);STATE.breathHeld=false;
-            clearFlightInput();releaseLookControl();cancelTouchNavigation();setUiMenuOpen(false);
-            for(const key of Object.keys(STATE.keys))STATE.keys[key]=false;
-          },
-          onClose(){swordAudio.setPaused(STATE.inspectMode||isInteractionOverlayOpen());}
-        });
 
         unlocks.setHooks({
           onOpen(){
@@ -6590,9 +6524,9 @@
       function launchQingyuanToy(){
         void initQingyuanToy().catch(error=>{
           console.error('Qingyuan initialization failed:',error);
-          window.QingyuanLoading?.fail(error,'画面初始化失败，请重新加载，或更新 B站 App 后重试。');
+          window.QingyuanLoading?.fail(error,'画面初始化失败，请重新加载页面后重试。');
           const status=document.getElementById('mode-desc');
-          if(status)status.textContent='画面初始化失败，请重新打开页面，或更新 B站 App 后重试。';
+          if(status)status.textContent='画面初始化失败，请重新打开页面后重试。';
         });
       }
       // The game remains usable with keyboard/touch even if the SDK CDN is slow or unavailable.

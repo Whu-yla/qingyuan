@@ -9,13 +9,13 @@
 | 项 | 值 |
 | --- | --- |
 | 结果 | ✅ PASS |
-| 时间 | 2026-11-14 15:13:42（Asia/Shanghai，ISO 2026-11-14T07:13:42.576Z） |
+| 时间 | 2026-11-14 15:38:16（Asia/Shanghai，ISO 2026-11-14T07:38:16.032Z） |
 | URL | http://127.0.0.1:8123/index.html |
 | 是否进入主界面 | 是 |
-| 启动耗时 | 12997 ms |
-| 总耗时 | 65151 ms |
-| 截图（整页） | `/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final.png`（1376243 bytes） |
-| 截图（画布） | `/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final-canvas.png`（1374427 bytes） |
+| 启动耗时 | 12170 ms |
+| 总耗时 | 64297 ms |
+| 截图（整页） | `/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png`（1367672 bytes） |
+| 截图（画布） | `/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png`（1366268 bytes） |
 | 报告 | `/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/report.md` |
 
 ## 运行环境
@@ -35,42 +35,40 @@
 | 请求 URL | `http://127.0.0.1:8123/index.html` |
 | 最终 URL | `http://127.0.0.1:8123/index.html` |
 | 是否发生跳转 | 否 |
-| 主框架导航 @613ms | `http://127.0.0.1:8123/index.html` |
-| document 响应 @610ms | HTTP 200 `http://127.0.0.1:8123/index.html` |
+| 主框架导航 @460ms | `http://127.0.0.1:8123/index.html` |
+| document 响应 @452ms | HTTP 200 `http://127.0.0.1:8123/index.html` |
 
 ## 启动过程时间线
 
 | 距开始 (ms) | 进度 | 加载状态文本 | #qingyuan-loading 隐藏 | #app-stage inert | Startup state |
 | ---: | ---: | --- | --- | --- | --- |
-| 651 | 2% | 正在准备游戏资源… | 否 | 是 | loading |
-| 2818 | 9% | 正在加载音效组件（2 / 13） | 否 | 是 | loading |
-| 3071 | 13% | 正在加载手势组件（3 / 13） | 否 | 是 | loading |
-| 3323 | 25% | 正在加载平台适配（6 / 13） | 否 | 是 | loading |
-| 3575 | 62% | 正在唤醒御剑灵力… | 否 | 是 | loading |
-| 5282 | 78% | 正在凝聚剑光… | 否 | 是 | loading |
-| 5535 | 90% | 正在准备招式与操控… | 否 | 是 | loading |
-| 5787 | 97% | 正在点亮初始画面… | 否 | 是 | loading |
-| 12742 | 100% | 准备就绪，即将进入… | 否 | 是 | loading |
-| 12997 | 100% | 准备就绪，即将进入… | 是 | 否 | ready |
+| 498 | 2% | 正在准备游戏资源… | 否 | 是 | loading |
+| 2756 | 11% | 正在加载音效组件（2 / 9） | 否 | 是 | loading |
+| 3008 | 17% | 正在加载手势组件（3 / 9） | 否 | 是 | loading |
+| 3260 | 34% | 正在加载平台适配（6 / 9） | 否 | 是 | loading |
+| 5004 | 78% | 正在凝聚剑光… | 否 | 是 | loading |
+| 5256 | 90% | 正在准备招式与操控… | 否 | 是 | loading |
+| 11918 | 100% | 准备就绪，即将进入… | 否 | 是 | loading |
+| 12170 | 100% | 准备就绪，即将进入… | 是 | 否 | ready |
 
 ## 耗时分解
 
 | 阶段 | 距开始 (ms) | 本阶段耗时 (ms) |
 | --- | ---: | ---: |
-| 浏览器启动 | 304 | 304 |
-| 首次导航完成 | 621 | 317 |
-| 启动完成（ready） | 12997 | 12376 |
-| 额外稳定等待结束 | 15998 | 3001 |
-| 截图完成 | 44895 | 28897 |
-| PNG 解码分析完成 | 45002 | 107 |
-| 浏览器关闭 | - | 1939 |
-| 总耗时 | 65151 | - |
+| 浏览器启动 | 272 | 272 |
+| 首次导航完成 | 487 | 215 |
+| 启动完成（ready） | 12170 | 11683 |
+| 额外稳定等待结束 | 15170 | 3000 |
+| 截图完成 | 45240 | 30070 |
+| PNG 解码分析完成 | 45357 | 117 |
+| 浏览器关闭 | - | 1827 |
+| 总耗时 | 64297 | - |
 
 ## 页面采集值
 
 | 项 | 值 |
 | --- | --- |
-| document.title | 青元剑诀 · 月照青元 · B站 Toy |
+| document.title | 青元剑诀 · 月照青元 |
 | document.readyState | complete |
 | window.innerWidth × innerHeight | 1440 × 900 |
 | canvas 数量 | 3 |
@@ -79,8 +77,8 @@
 | WebGL vendor | Google Inc. (Google) |
 | window.THREE REVISION | 128 |
 | window.QingyuanUnlocks | 存在 |
-| #unlock-home-count | 5/5 |
-| #unlock-summary-count | 5 / 5 |
+| #unlock-home-count | （无） |
+| #unlock-summary-count | （无） |
 | #qy-loading-status | 准备就绪，即将进入… |
 | #qy-loading-hint | 首次进入需要加载资源，请稍候。准备完成后将自动进入。 |
 | #qingyuan-loading.hidden | true |
@@ -111,8 +109,8 @@
 
 | 截图 | 尺寸 | 全图非黑比例 | 中心 50% 非黑比例 | 全图亮度均值 |
 | --- | --- | ---: | ---: | ---: |
-| fullPage | 1440 × 900 | 99.88% | 99.94% | 78.847 |
-| canvas | 1440 × 900 | 99.88% | 99.95% | 79.106 |
+| fullPage | 1440 × 900 | 99.87% | 99.94% | 78.812 |
+| canvas | 1440 × 900 | 99.88% | 99.95% | 79.063 |
 
 ## Console / 异常
 
@@ -140,7 +138,7 @@
 
 ```json
 {
-  "at": 12393,
+  "at": 11730,
   "pct": 100,
   "pctText": "100%",
   "status": "准备就绪，即将进入…",
@@ -153,18 +151,18 @@
   "isError": false,
   "retryVisible": false,
   "ready": true,
-  "docTitle": "青元剑诀 · 月照青元 · B站 Toy"
+  "docTitle": "青元剑诀 · 月照青元"
 }
 ```
 
 ## 截图
 
-- 整页：`/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final.png`（1376243 bytes）
-- 画布：`/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final-canvas.png`（1374427 bytes）
+- 整页：`/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png`（1367672 bytes）
+- 画布：`/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png`（1366268 bytes）
 
-![boot](final.png)
+![boot](boot.png)
 
-![boot-canvas](final-canvas.png)
+![boot-canvas](boot-canvas.png)
 
 ## 原始 JSON
 
@@ -172,8 +170,8 @@
 {
   "ok": true,
   "tool": "tools/shot.mjs",
-  "startedAt": "2026-11-14T07:13:42.576Z",
-  "startedAtLocal": "2026-11-14 15:13:42",
+  "startedAt": "2026-11-14T07:38:16.032Z",
+  "startedAtLocal": "2026-11-14 15:38:16",
   "url": "http://127.0.0.1:8123/index.html",
   "channel": "msedge",
   "headless": true,
@@ -192,11 +190,11 @@
   ],
   "load": {
     "ready": true,
-    "readyElapsedMs": 12997,
+    "readyElapsedMs": 12170,
     "timedOut": false,
     "timeline": [
       {
-        "elapsedMs": 651,
+        "elapsedMs": 498,
         "percent": 2,
         "status": "正在准备游戏资源…",
         "loadingHidden": false,
@@ -205,43 +203,34 @@
         "isError": false
       },
       {
-        "elapsedMs": 2818,
-        "percent": 9,
-        "status": "正在加载音效组件（2 / 13）",
+        "elapsedMs": 2756,
+        "percent": 11,
+        "status": "正在加载音效组件（2 / 9）",
         "loadingHidden": false,
         "stageInert": true,
         "startupState": "loading",
         "isError": false
       },
       {
-        "elapsedMs": 3071,
-        "percent": 13,
-        "status": "正在加载手势组件（3 / 13）",
+        "elapsedMs": 3008,
+        "percent": 17,
+        "status": "正在加载手势组件（3 / 9）",
         "loadingHidden": false,
         "stageInert": true,
         "startupState": "loading",
         "isError": false
       },
       {
-        "elapsedMs": 3323,
-        "percent": 25,
-        "status": "正在加载平台适配（6 / 13）",
+        "elapsedMs": 3260,
+        "percent": 34,
+        "status": "正在加载平台适配（6 / 9）",
         "loadingHidden": false,
         "stageInert": true,
         "startupState": "loading",
         "isError": false
       },
       {
-        "elapsedMs": 3575,
-        "percent": 62,
-        "status": "正在唤醒御剑灵力…",
-        "loadingHidden": false,
-        "stageInert": true,
-        "startupState": "loading",
-        "isError": false
-      },
-      {
-        "elapsedMs": 5282,
+        "elapsedMs": 5004,
         "percent": 78,
         "status": "正在凝聚剑光…",
         "loadingHidden": false,
@@ -250,7 +239,7 @@
         "isError": false
       },
       {
-        "elapsedMs": 5535,
+        "elapsedMs": 5256,
         "percent": 90,
         "status": "正在准备招式与操控…",
         "loadingHidden": false,
@@ -259,16 +248,7 @@
         "isError": false
       },
       {
-        "elapsedMs": 5787,
-        "percent": 97,
-        "status": "正在点亮初始画面…",
-        "loadingHidden": false,
-        "stageInert": true,
-        "startupState": "loading",
-        "isError": false
-      },
-      {
-        "elapsedMs": 12742,
+        "elapsedMs": 11918,
         "percent": 100,
         "status": "准备就绪，即将进入…",
         "loadingHidden": false,
@@ -277,7 +257,7 @@
         "isError": false
       },
       {
-        "elapsedMs": 12997,
+        "elapsedMs": 12170,
         "percent": 100,
         "status": "准备就绪，即将进入…",
         "loadingHidden": true,
@@ -287,7 +267,7 @@
       }
     ],
     "lastState": {
-      "at": 12393,
+      "at": 11730,
       "pct": 100,
       "pctText": "100%",
       "status": "准备就绪，即将进入…",
@@ -300,7 +280,7 @@
       "isError": false,
       "retryVisible": false,
       "ready": true,
-      "docTitle": "青元剑诀 · 月照青元 · B站 Toy"
+      "docTitle": "青元剑诀 · 月照青元"
     },
     "errorState": false,
     "navError": null,
@@ -310,13 +290,13 @@
     "redirected": false,
     "navigations": [
       {
-        "at": 613,
+        "at": 460,
         "url": "http://127.0.0.1:8123/index.html"
       }
     ],
     "documents": [
       {
-        "at": 610,
+        "at": 452,
         "url": "http://127.0.0.1:8123/index.html",
         "status": 200
       }
@@ -324,18 +304,18 @@
   },
   "shots": {
     "fullPage": {
-      "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final.png",
-      "bytes": 1376243
+      "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+      "bytes": 1367672
     },
     "canvas": {
-      "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final-canvas.png",
-      "bytes": 1374427,
+      "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png",
+      "bytes": 1366268,
       "mode": "element"
     },
     "errors": []
   },
   "page": {
-    "title": "青元剑诀 · 月照青元 · B站 Toy",
+    "title": "青元剑诀 · 月照青元",
     "url": "http://127.0.0.1:8123/index.html",
     "readyState": "complete",
     "htmlClasses": "",
@@ -350,8 +330,8 @@
     "loadingHidden": true,
     "stageInert": false,
     "qingyuanLoadingState": "ready",
-    "unlockHomeCount": "5/5",
-    "unlockSummaryCount": "5 / 5",
+    "unlockHomeCount": "",
+    "unlockSummaryCount": "",
     "hasQingyuanUnlocks": true,
     "hasQingyuanToyBridge": true,
     "threeRevision": "128",
@@ -489,8 +469,8 @@
     ],
     "screenshots": {
       "fullPage": {
-        "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final.png",
-        "bytes": 1376243,
+        "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+        "bytes": 1367672,
         "width": 1440,
         "height": 900,
         "full": {
@@ -503,10 +483,10 @@
           "width": 1440,
           "height": 900,
           "total": 1296000,
-          "nonBlack": 1294387,
-          "nonBlackRatio": 0.998755,
-          "brightRatio": 0.80286,
-          "avgLuma": 78.847
+          "nonBlack": 1294373,
+          "nonBlackRatio": 0.998745,
+          "brightRatio": 0.802613,
+          "avgLuma": 78.812
         },
         "center": {
           "region": {
@@ -518,15 +498,15 @@
           "width": 720,
           "height": 450,
           "total": 324000,
-          "nonBlack": 323806,
-          "nonBlackRatio": 0.999401,
-          "brightRatio": 0.967522,
-          "avgLuma": 91.913
+          "nonBlack": 323805,
+          "nonBlackRatio": 0.999398,
+          "brightRatio": 0.967676,
+          "avgLuma": 91.897
         }
       },
       "canvas": {
-        "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final-canvas.png",
-        "bytes": 1374427,
+        "path": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png",
+        "bytes": 1366268,
         "width": 1440,
         "height": 900,
         "full": {
@@ -539,10 +519,10 @@
           "width": 1440,
           "height": 900,
           "total": 1296000,
-          "nonBlack": 1294488,
-          "nonBlackRatio": 0.998833,
-          "brightRatio": 0.80986,
-          "avgLuma": 79.106
+          "nonBlack": 1294458,
+          "nonBlackRatio": 0.99881,
+          "brightRatio": 0.809667,
+          "avgLuma": 79.063
         },
         "center": {
           "region": {
@@ -554,10 +534,10 @@
           "width": 720,
           "height": 450,
           "total": 324000,
-          "nonBlack": 323835,
-          "nonBlackRatio": 0.999491,
-          "brightRatio": 0.971154,
-          "avgLuma": 91.894
+          "nonBlack": 323834,
+          "nonBlackRatio": 0.999488,
+          "brightRatio": 0.971142,
+          "avgLuma": 91.893
         }
       }
     }
@@ -573,20 +553,20 @@
     "requestFailureTop": []
   },
   "conclusion": "PASS：启动完成并进入主界面，画面非黑（截图中心非黑像素比例 99.94%，Canvas toDataURL 采样最大 0.00%）。",
-  "durationMs": 65151,
+  "durationMs": 64297,
   "reportPath": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/report.md",
   "timings": {
-    "launchMs": 304,
-    "navMs": 621,
-    "readyMs": 12997,
-    "postWaitMs": 15998,
-    "screenshotsMs": 28897,
-    "pixelAnalysisMs": 107,
-    "closeMs": 1939
+    "launchMs": 272,
+    "navMs": 487,
+    "readyMs": 12170,
+    "postWaitMs": 15170,
+    "screenshotsMs": 30070,
+    "pixelAnalysisMs": 117,
+    "closeMs": 1827
   },
   "shotPaths": {
-    "fullPage": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final.png",
-    "canvas": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/final-canvas.png"
+    "fullPage": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot.png",
+    "canvas": "/Users/victorhugo/Documents/deepseek-harness/default-workspace/qingyuan/shots/boot-canvas.png"
   }
 }
 ```

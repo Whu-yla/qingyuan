@@ -7,16 +7,15 @@
   let sdk = null, offContainer = null, containerState = null;
   let connecting = null, connectionSerial = 0, stateRevision = 0, mediaSerial = 0;
   let suspended = false, connected = false, pendingMode = null;
-  const toyRoute = /(^|\.)bilibili\.com$/i.test(location.hostname) && /^\/toy(?:\/|$)/.test(location.pathname);
-  // 本地复刻：强制使用浏览器原生 getUserMedia，不再依赖 B站 Toy SDK 的摄像头授权。
+  // 本地复刻：强制使用浏览器原生 getUserMedia，不再依赖任何宿主 SDK 的摄像头授权。
   const STANDALONE = true;
   function isPlatformPage() {
     if (STANDALONE) return false;
-    // Toy runs inside a host iframe; its child URL can be a CDN URL or srcdoc.
+    // Embedded pages run inside a host iframe; the child URL can be a CDN URL or srcdoc.
     // The SDK relays camera requests to that host instead of using child permissions.
     let embedded = true;
     try { embedded = window.self !== window.top; } catch (_) {}
-    return toyRoute || embedded || /BiliApp|BiliHarmony/i.test(navigator.userAgent) || Boolean(window.__TOY_META__?.toy_id);
+    return embedded || Boolean(window.__TOY_META__?.toy_id);
   }
 
   function cameraError(code, message) {
@@ -60,12 +59,12 @@
     });
   }
   function requestCamera(nativeConstraints) {
-    // Standalone previews use the browser; embedded Toy pages use the host SDK.
+    // Standalone pages use the browser; embedded pages use the host SDK.
     const platformPage = isPlatformPage();
     const api = platformPage ? (window.toy || sdk) : null;
     if (api) {
       if (typeof api.requestCamera !== 'function' || typeof api.stopMedia !== 'function') {
-        return Promise.reject(cameraError('TOY_CAMERA_UNSUPPORTED', 'Toy camera capture is unavailable in this environment.'));
+        return Promise.reject(cameraError('TOY_CAMERA_UNSUPPORTED', 'Host camera capture is unavailable in this environment.'));
       }
       // Do not await isSupport or model loading here: preserve the click's user activation.
       try {
@@ -75,7 +74,7 @@
       }
     }
     if (platformPage) {
-      return Promise.reject(cameraError('TOY_SDK_UNAVAILABLE', 'Toy SDK has not loaded. Retry after the connection recovers.'));
+      return Promise.reject(cameraError('TOY_SDK_UNAVAILABLE', 'Host SDK has not loaded. Retry after the connection recovers.'));
     }
     if (window.isSecureContext === false) {
       return Promise.reject(cameraError('INSECURE_CONTEXT', 'Camera requires a secure context.'));
@@ -121,7 +120,7 @@
       pendingMode = null;
     }
     for (const listener of listeners) {
-      try { listener(containerState); } catch (error) { console.warn('Toy layout update failed:', error); }
+      try { listener(containerState); } catch (error) { console.warn('Host layout update failed:', error); }
     }
   }
   function removeContainerListener() {
@@ -214,8 +213,6 @@
       return () => listeners.delete(listener);
     }
   });
-  const script = document.getElementById('bilibili-toy-sdk');
-  script?.addEventListener('load', () => { void connect(); }, { once: true });
   document.addEventListener('DOMContentLoaded', () => { void connect(); }, { once: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopAllMedia(); });
   window.addEventListener('pagehide', suspend);

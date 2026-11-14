@@ -47,7 +47,7 @@
 
 | 项 | 值 |
 | --- | --- |
-| document.title | 青元剑诀 · 月照青元 · B站 Toy |
+| document.title | 青元剑诀 · 月照青元 · 原版平台 |
 | document.readyState | complete |
 | window.innerWidth × innerHeight | 1440 × 900 |
 | canvas 数量 | 3 |
@@ -128,7 +128,7 @@
   "isError": false,
   "retryVisible": false,
   "ready": true,
-  "docTitle": "青元剑诀 · 月照青元 · B站 Toy"
+  "docTitle": "青元剑诀 · 月照青元 · 原版平台"
 }
 ```
 
@@ -275,7 +275,7 @@
       "isError": false,
       "retryVisible": false,
       "ready": true,
-      "docTitle": "青元剑诀 · 月照青元 · B站 Toy"
+      "docTitle": "青元剑诀 · 月照青元 · 原版平台"
     },
     "errorState": false,
     "navError": null,
@@ -310,7 +310,7 @@
     "errors": []
   },
   "page": {
-    "title": "青元剑诀 · 月照青元 · B站 Toy",
+    "title": "青元剑诀 · 月照青元 · 原版平台",
     "url": "http://127.0.0.1:8123/index.html",
     "readyState": "complete",
     "htmlClasses": "",

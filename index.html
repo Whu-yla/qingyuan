@@ -467,7 +467,7 @@ SOFTWARE.</script>
       <section id="game-guide-panel" class="game-guide-panel" role="dialog" aria-modal="true" aria-labelledby="game-guide-title" tabindex="-1">
         <header class="game-guide-header"><div><p>青元剑诀 · 随身剑谱</p><h2 id="game-guide-title">完整操作说明</h2></div><button id="game-guide-close" type="button" aria-label="关闭操作说明">关闭 ×</button></header>
         <div class="game-guide-content" id="game-guide-content">
-          <p class="guide-intro">以御剑操控、剑阵施展、雷龙吐雷和模型赏析为主。首次进入即可使用鼠标或触屏，摄像头只用于手势控制。</p>
+          <p class="guide-intro">以御剑操控、剑阵施展、雷龙吐雷和模型赏析为主。进入页面会自动开启手势控制并申请一次摄像头权限；若未授权或设备无摄像头，会自动回落为鼠标或触屏御剑。</p>
           <nav class="guide-toc" aria-label="说明目录"><a href="#guide-start">快速上手</a><a href="#guide-keyboard">键鼠键位</a><a href="#guide-phone">手机操作</a><a href="#guide-gestures">手势剑诀</a><a href="#guide-effects">灵力与特效</a><a href="#guide-inspection">赏剑模式</a><a href="#guide-interface">界面与画质</a><a href="#guide-camera">摄像头排障</a></nav>
           <section id="guide-start"><h3>一、快速上手</h3><ol><li>手机先点左下角“切换横屏”，也可以随时切回竖屏。</li><li>移动鼠标，或用单指在空白画面滑动，引导飞剑；静止片刻会收束为本命剑。</li><li>点击下方招式按钮施法，再点同一招式即可关闭。键盘的 Q、R、E、T、F 同样采用单按开关，无需长按。</li><li>在“灵力调节”中设置雷电数量、剑光透明度、自转和流云剑气；底部“关后”开关可选择关闭分光后保留72口主剑，或只留一把飞剑。</li><li>左下角“界面”可恢复被隐藏的窗口，也可打开本说明。</li></ol></section>
           <section id="guide-keyboard"><h3>二、键盘与鼠标</h3><div class="guide-table-wrap"><table><thead><tr><th>操作</th><th>效果</th></tr></thead><tbody>
@@ -503,6 +503,6 @@ SOFTWARE.</script>
     <script id="qingyuan-unlock-core" type="text/plain" data-startup="剑诀模块" src="./assets/js/qingyuan-unlock-core.js?v=camera-preview-1"></script>
     <script id="qingyuan-sfx-bank" type="application/json"></script>
     <script type="text/plain" data-startup="音效资源" src="./assets/data/qingyuan-sfx-bank.js"></script>
-    <script id="qingyuan-app" type="text/plain" data-startup="游戏程序" src="./assets/js/app.js?v=camera-preview-1"></script>
+    <script id="qingyuan-app" type="text/plain" data-startup="游戏程序" src="./assets/js/app.js?v=hand-default-1"></script>
   </body>
 </html>

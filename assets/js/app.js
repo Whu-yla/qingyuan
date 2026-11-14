@@ -4756,6 +4756,7 @@
         // are separate stages. Failed/cancelled starts never poison retries.
         let handLandmarker=null,handTrackingInitPromise=null,handModelBuildPromise=null;
         let cameraStream=null,handSessionSerial=0,handDelegate='',forceHandCPU=false;
+        let autoHandAttempted=false; // 进入页面已自动尝试开启手势，失败后按钮显示“重新开启”
         let handAssetsPromise=null,lastHandInference=0,handRecovering=false;
         const videoEl=document.getElementById('webcam-video'),webcamCanvas=document.getElementById('webcam-canvas');
         const webcamCtx=webcamCanvas.getContext('2d'),webcamStatusEl=document.getElementById('webcam-status');
@@ -4881,7 +4882,7 @@
         }
         function resetMouseControl(){
           STATE.controlMode='MOUSE';STATE.isTracking=true;
-          toggleControlBtn.textContent='开启手势控制';trackingLabelEl.textContent='法诀御剑 · 灵枢已启';
+          toggleControlBtn.textContent=autoHandAttempted?'重新开启手势控制':'开启手势控制';trackingLabelEl.textContent='法诀御剑 · 灵枢已启';
           gestureWindow.length=0;smoothedHandScreen.initialized=false;
         }
         function stopCameraCapture(){
@@ -5078,6 +5079,7 @@
         }
         async function startHandTracking(){
           if(!unlocks.require('hand'))return false;
+          autoHandAttempted=true;
           STATE.controlMode='HAND';STATE.isTracking=false;toggleControlBtn.textContent='取消手势连接';trackingLabelEl.textContent='神识感应 · 正在连接...';
           syncRenderPerformance();
           return ensureHandTracking();
@@ -6520,6 +6522,9 @@
         updateHUD();
         await startup?.step(97,'正在点亮初始画面…');
         animate();
+        // 御剑模式默认优先使用手势控制：首屏加载完成后自动申请摄像头并启动手势识别。
+        // 未授权 / 无摄像头 / 非安全上下文时会自动回落为鼠标+触控模式（见 reportCameraFailure），不会影响正常御剑。
+        try{ if(STATE.controlMode!=='HAND') void startHandTracking(); }catch(_){}
       }
       function launchQingyuanToy(){
         void initQingyuanToy().catch(error=>{

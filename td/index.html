@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#02050a" />
+  <meta name="description" content="青元剑诀 · 剑阵守山：韩立结婴之后，诸敌叩山，布下剑阵，守住青云阵眼。" />
+  <title>青元剑诀 · 剑阵守山</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg" />
+  <link rel="stylesheet" href="./td.css" />
+</head>
+<body>
+  <div id="td-app">
+    <canvas id="td-canvas" aria-label="剑阵守山战场"></canvas>
+
+    <div class="hud-layer">
+      <section id="hud-left" class="hud-panel" aria-label="战况面板">
+        <div id="level-name">第一关 · 山门初阵</div>
+        <div id="level-sub">青元剑派 · 山门</div>
+        <div class="hp-row">阵眼 <span id="base-hp-text">20/20</span><div class="bar"><i id="base-hp-fill"></i></div></div>
+        <div id="wave-label">第 1 / 5 波</div>
+        <div id="spirit-row">灵力 <b id="spirit-value">170</b></div>
+      </section>
+
+      <div id="boss-bar" class="hidden" aria-label="首领状态">
+        <div id="boss-name">山门妖王</div>
+        <div id="boss-realm">结丹后期</div>
+        <div class="boss-track"><i id="boss-hp-fill"></i></div>
+        <span id="boss-hp-text">0 / 0</span>
+      </div>
+
+      <nav id="top-actions" aria-label="对局操作">
+        <a id="back-link" href="../index.html">返回御剑</a>
+        <button id="guide-btn" type="button" aria-label="查看玩法说明">玩法</button>
+        <button id="speed-btn" type="button" aria-label="切换游戏速度">×1</button>
+        <button id="pause-btn" type="button" aria-label="暂停游戏">暂停</button>
+      </nav>
+
+      <section id="tower-roster" aria-label="剑阵建造栏">
+        <h2 class="tr-title">剑阵 · 选阵后点阵位</h2>
+        <div class="tr-cards">
+          <button class="tower-card" type="button" data-tower="lianhua" aria-label="莲花剑阵，耗灵 55，范围剑光">
+            <span class="tc-icon">莲</span>
+            <span class="tc-name">莲花剑阵</span>
+            <span class="tc-cost">55</span>
+            <span class="tc-desc">范围剑光</span>
+          </button>
+          <button class="tower-card" type="button" data-tower="dageng" aria-label="大庚剑阵，耗灵 75，远距剑气">
+            <span class="tc-icon">庚</span>
+            <span class="tc-name">大庚剑阵</span>
+            <span class="tc-cost">75</span>
+            <span class="tc-desc">远距剑气</span>
+          </button>
+          <button class="tower-card" type="button" data-tower="qingyuan" aria-label="青元剑盾，耗灵 50，剑域减速">
+            <span class="tc-icon">盾</span>
+            <span class="tc-name">青元剑盾</span>
+            <span class="tc-cost">50</span>
+            <span class="tc-desc">剑域减速</span>
+          </button>
+          <button class="tower-card" type="button" data-tower="pixie" aria-label="辟邪神雷，耗灵 85，连跳三敌">
+            <span class="tc-icon">雷</span>
+            <span class="tc-name">辟邪神雷</span>
+            <span class="tc-cost">85</span>
+            <span class="tc-desc">连跳三敌</span>
+          </button>
+          <button class="tower-card" type="button" data-tower="jujian" aria-label="巨剑术，耗灵 110，巨剑天降">
+            <span class="tc-icon">巨</span>
+            <span class="tc-name">巨剑术</span>
+            <span class="tc-cost">110</span>
+            <span class="tc-desc">巨剑天降</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="spell-bar" aria-label="法术快捷栏">
+        <button class="spell-btn" type="button" data-spell="pixie" title="剑指 · 辟邪神雷" aria-label="辟邪神雷，快捷键 1，剑指手势">
+          <kbd class="spell-key">1</kbd><span class="spell-name">辟邪神雷</span><span class="spell-cd"></span>
+        </button>
+        <button class="spell-btn" type="button" data-spell="lotus" title="五指 · 剑莲" aria-label="莲花剑阵，快捷键 2，五指手势">
+          <kbd class="spell-key">2</kbd><span class="spell-name">莲花剑阵</span><span class="spell-cd"></span>
+        </button>
+        <button class="spell-btn" type="button" data-spell="dageng" title="食指小指 · 大庚" aria-label="大庚剑阵，快捷键 3，食指小指手势">
+          <kbd class="spell-key">3</kbd><span class="spell-name">大庚剑阵</span><span class="spell-cd"></span>
+        </button>
+        <button class="spell-btn" type="button" data-spell="giant" title="八字 · 巨剑" aria-label="巨剑术，快捷键 4，八字手势">
+          <kbd class="spell-key">4</kbd><span class="spell-name">巨剑术</span><span class="spell-cd"></span>
+        </button>
+        <button class="spell-btn" type="button" data-spell="shield" title="握拳 · 剑盾" aria-label="青元剑盾，快捷键 5，握拳手势">
+          <kbd class="spell-key">5</kbd><span class="spell-name">青元剑盾</span><span class="spell-cd"></span>
+        </button>
+      </section>
+
+      <section id="gesture-panel" aria-label="手势控制">
+        <button id="gesture-toggle" type="button" aria-label="开启手势控制">开启手势控制</button>
+        <div id="gesture-state">手势：未开启</div>
+        <div class="gesture-view">
+          <video id="gesture-video" autoplay playsinline muted aria-label="手势摄像头预览"></video>
+          <canvas id="gesture-overlay" width="240" height="180" aria-hidden="true"></canvas>
+        </div>
+        <p class="gesture-tip">剑指·神雷 / 五指·剑莲 / 握拳·剑盾 / 食指小指·大庚 / 八字·巨剑；保持手势 0.5 秒施法</p>
+      </section>
+
+      <div id="aim-reticle" class="hidden" aria-hidden="true"><span id="aim-label"></span></div>
+    </div>
+
+    <div id="tower-panel" class="hidden" aria-label="剑阵详情">
+      <div id="tp-name">莲花剑阵</div>
+      <div id="tp-level">等级 1</div>
+      <div id="tp-stats">伤害 — · 射程 — · 攻速 —</div>
+      <div class="tp-actions">
+        <button id="tp-upgrade" type="button">升级</button>
+        <button id="tp-sell" type="button">拆除</button>
+      </div>
+      <button id="tp-close" type="button" aria-label="关闭剑阵详情">×</button>
+    </div>
+
+    <section id="level-select" aria-label="关卡选择">
+      <h1>剑阵守山</h1>
+      <p class="ls-sub">韩立结婴之后，诸敌叩山。布下剑阵，守住青云阵眼。</p>
+      <div id="level-list"></div>
+      <div class="ls-tip">键鼠：选剑阵→点阵位建塔；1-5 施法。手势：开启摄像头后用手势施法。<a href="../index.html">返回御剑模式</a></div>
+    </section>
+
+    <div id="result-overlay" class="hidden" role="dialog" aria-label="关卡结算">
+      <div class="result-card">
+        <div id="result-title">山门守住了</div>
+        <div id="result-desc">阵眼余威尚存，诸敌退去。</div>
+        <div class="result-actions">
+          <button id="result-next-btn" type="button">下一关</button>
+          <button id="result-retry-btn" type="button">重试</button>
+          <button id="result-home-btn" type="button">返回选关</button>
+        </div>
+      </div>
+    </div>
+
+    <section id="guide-overlay" class="hidden" role="dialog" aria-label="玩法说明">
+      <div class="guide-card">
+        <button id="guide-close" type="button" aria-label="关闭玩法说明">×</button>
+        <h2>剑阵守山 · 玩法</h2>
+        <ul class="guide-rules">
+          <li><b>目标</b>：守住 20 点阵眼。敌潮沿山道涌入，阵眼归零即败，守满五波则胜。</li>
+          <li><b>灵力</b>：靠击杀与时间增长；建造剑阵与施展法术都要消耗灵力。</li>
+          <li><b>建阵</b>：点左下剑阵再点阵位建造；点击已建剑阵可升级/拆除。</li>
+          <li><b>施法</b>：按键 1-5 施法，空格暂停，Esc 取消选中。</li>
+          <li><b>手势</b>：剑指·神雷、五指·剑莲、握拳·剑盾、食指小指·大庚、八字·巨剑；保持手势 0.5 秒施法。</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="pause-overlay" class="hidden" role="dialog" aria-label="暂停">
+      <div class="pause-card">
+        <p class="pause-title">阵势已停</p>
+        <button id="resume-btn" type="button">继续</button>
+        <button id="pause-home-btn" type="button">返回选关</button>
+      </div>
+    </section>
+
+    <div id="toast" class="hidden" role="status" aria-live="polite"></div>
+
+    <div id="wave-banner" class="hidden" aria-hidden="true">
+      <div id="wave-banner-title"></div>
+      <div id="wave-banner-sub"></div>
+    </div>
+
+    <div id="loading" role="status" aria-label="加载中">
+      <div class="loading-inner">
+        <div class="loading-array" aria-hidden="true">
+          <i class="la-ring"></i>
+          <i class="la-ring la-ring-b"></i>
+          <i class="la-sword la-s1"></i>
+          <i class="la-sword la-s2"></i>
+          <i class="la-sword la-s3"></i>
+          <i class="la-sword la-s4"></i>
+          <i class="la-core"></i>
+        </div>
+        <h1>青元剑诀 · 剑阵守山</h1>
+        <div id="loading-text">正在布阵…</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/three-r128.min.js"></script>
+  <script src="../assets/js/vision-bundle.js"></script>
+  <script src="../assets/js/hand-wasm-simd-runtime.js"></script>
+  <script src="../assets/js/hand-wasm-basic-runtime.js"></script>
+  <script src="./levels.js"></script>
+  <script src="./world.js"></script>
+  <script src="./gesture.js"></script>
+  <script src="./game.js"></script>
+</body>
+</html>

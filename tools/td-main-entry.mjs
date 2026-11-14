@@ -1,0 +1,17 @@
+import { chromium } from 'playwright-core';
+const base = process.argv[2] || 'http://127.0.0.1:8123';
+const browser = await chromium.launch({ channel: 'msedge', headless: true, args: ['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'] });
+const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+const page = await ctx.newPage();
+const errors = [];
+page.on('pageerror', e => errors.push(String(e)));
+await page.goto(base + '/index.html', { waitUntil: 'load' });
+await page.waitForFunction(() => { const l = document.getElementById('qingyuan-loading'); return l && (l.hidden || getComputedStyle(l).display === 'none'); }, null, { timeout: 60000 });
+await page.waitForTimeout(1200);
+const box = await page.locator('#td-entry-btn').boundingBox();
+await page.screenshot({ path: '/tmp/main-page2.png' });
+await page.click('#td-entry-btn');
+await page.waitForFunction(() => window.QYTD && window.QYTD.ready === true, null, { timeout: 30000 });
+const info = await page.evaluate(() => ({ url: location.pathname, phase: window.QYTD.state ? window.QYTD.state.phase : null, levels: document.querySelectorAll('.level-card').length }));
+console.log(JSON.stringify({ box, info, errors }, null, 1));
+await browser.close();

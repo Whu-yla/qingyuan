@@ -1242,3 +1242,8 @@
       #app-stage.mobile-layout.is-landscape .unlock-follow-guide h3{font-size:18px;letter-spacing:0;}
       #app-stage.mobile-layout.is-landscape .unlock-follow-guide h3 strong{font-size:23px;margin-left:0;}
       #app-stage.mobile-layout.is-landscape .unlock-follow-instruction{font-size:12px;line-height:1.7;}
+
+      /* 塔防模式入口 */
+      #td-entry-btn{display:flex;align-items:center;gap:6px;padding:8px 12px;color:#ffe2a6;border:1px solid rgba(255,214,130,.5);border-radius:6px;background:rgba(30,22,10,.9);font:13px var(--font-serif);letter-spacing:1px;cursor:pointer;white-space:nowrap;backdrop-filter:blur(12px);}
+      #td-entry-btn:hover{color:#fff6d8;border-color:#ffd57a;background:rgba(72,52,20,.92);box-shadow:0 0 14px rgba(255,199,61,.28);}
+      #td-entry-btn:focus-visible{outline:2px solid #ffd57a;outline-offset:2px;}
